@@ -121,20 +121,61 @@ public:
 		
 		al_clear_to_color(background_color);
 		
-		for(int i = 0; i < 5; i++)
+		for(int j = 0; j < 4; j++)
 		{
-			for(int j = 0; j < 4; j++)
+			for(int i = 0; i < 5; i++)
 			{
 				ALLEGRO_COLOR tmp;
-				if(numbers[left_score][i][j])
+				if(numbers[left_score % 10][i][j])
 					tmp = gr;
 				else
 					tmp = bl;
-				al_draw_filled_rectangle(HEIGHT / 3 + BALL_SIZE * j, WIDTH / 4 + BALL_SIZE * i,   HEIGHT / 3 + BALL_SIZE * (j + 1), WIDTH / 4 + BALL_SIZE * (i + 1), tmp);
+				al_draw_filled_rectangle(WIDTH / 4 + BALL_SIZE * j + BALL_SIZE * 5, HEIGHT / 3 + BALL_SIZE * i, WIDTH / 4 + BALL_SIZE * (j + 1) + BALL_SIZE * 5,  HEIGHT / 3 + BALL_SIZE * (i + 1), tmp);
 		
 			}
 		}
 		
+		for(int j = 0; j < 4; j++)
+		{
+			for(int i = 0; i < 5; i++)
+			{
+				ALLEGRO_COLOR tmp;
+				if(numbers[left_score / 10][i][j])
+					tmp = gr;
+				else
+					tmp = bl;
+				al_draw_filled_rectangle(WIDTH / 4 + BALL_SIZE * j, HEIGHT / 3 + BALL_SIZE * i, WIDTH / 4 + BALL_SIZE * (j + 1),  HEIGHT / 3 + BALL_SIZE * (i + 1), tmp);
+		
+			}
+		}
+
+		for(int j = 0; j < 4; j++)
+		{
+			for(int i = 0; i < 5; i++)
+			{
+				ALLEGRO_COLOR tmp;
+				if(numbers[right_score % 10][i][j])
+					tmp = gr;
+				else
+					tmp = bl;
+				al_draw_filled_rectangle((WIDTH * 3) / 4 + BALL_SIZE * j, HEIGHT / 3 + BALL_SIZE * i, (WIDTH * 3) / 4 + BALL_SIZE * (j + 1),  HEIGHT / 3 + BALL_SIZE * (i + 1), tmp);
+		
+			}
+		}
+		
+		for(int j = 0; j < 4; j++)
+		{
+			for(int i = 0; i < 5; i++)
+			{
+				ALLEGRO_COLOR tmp;
+				if(numbers[right_score / 10][i][j])
+					tmp = gr;
+				else
+					tmp = bl;
+				al_draw_filled_rectangle((WIDTH * 3) / 4 + BALL_SIZE * j - BALL_SIZE * 5, HEIGHT / 3 + BALL_SIZE * i, (WIDTH * 3) / 4 + BALL_SIZE * (j + 1) - BALL_SIZE * 5,  HEIGHT / 3 + BALL_SIZE * (i + 1), tmp);
+		
+			}
+		}
 		al_draw_filled_rectangle(WIDTH / 2 - BAR_WIDTH / 2, 0, WIDTH / 2 + BAR_WIDTH / 2, HEIGHT, gr);
 		{
 			std::unique_lock<std::mutex> lock(mutex_left);
@@ -176,7 +217,8 @@ public:
 	
 	void end()
 	{
-		cout << "END!!!";
+		cout << "GAME ENDED!\n";
+		cout << "SCORE: " << left_score << " - " << right_score << "\n";
 		std::unique_lock<std::mutex> lock(mutex_end);
 		game_end = true;
 		cv_end.notify_all();
@@ -250,9 +292,9 @@ public:
 						ball_direction_y = (ball_y - right_position) / (BAR_HEIGHT / 8);
 					}
 				}
-				if(ball_y <= BALL_SIZE)
+				if(ball_y <= BALL_SIZE / 2)
 					ball_direction_y *= -1;
-				if(ball_y >= HEIGHT - BALL_SIZE)
+				if(ball_y >= HEIGHT - BALL_SIZE / 2)
 					ball_direction_y *= -1;
 				if(ball_x <= 0)
 				{
@@ -265,7 +307,6 @@ public:
 					left_score++;
 				}
 			}
-			cout << "SCORE: " << left_score << " - " << right_score << "\n";
 			usleep(5000);
 		}
 	}
@@ -291,7 +332,7 @@ void player_input_manager(pong_game &game)
 	ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_mouse_event_source());
-	//al_register_event_source(queue, al_get_display_event_source(game.get_display()));
+	al_register_event_source(queue, al_get_display_event_source(game.get_display()));
 	ALLEGRO_EVENT event;
 	bool run = true;
 	while(run)
