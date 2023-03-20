@@ -77,7 +77,6 @@ bool numbers[10][5][4] =
 {1, 1, 1, 1},
 {0, 0, 0, 1},
 {1, 1, 1, 1}},
-
 };
 
 class pong_game{
@@ -107,9 +106,49 @@ private:
 
 	int left_score = 0;
 	int right_score = 0;
+
+	void ball_dierction_x_flip()
+	{
+		ball_direction_x *= -1;
+		if(ball_direction_x < 0)
+			ball_direction_x -= 0.25;
+		else
+			ball_direction_x += 0.25;
+	}
+	
 public:
 	void init()
 	{
+		restart(false);
+	}
+	
+	void print_score()
+	{
+		cout << "SCORE: " << left_score << " - " << right_score << "\n";
+	}
+	
+	void restart(bool show_score)
+	{
+		if(show_score)
+			print_score();
+
+		display_set = false;
+	
+		game_end = false;
+	
+		left_direction = 0;
+		left_position = HEIGHT / 2;
+
+		right_direction = 0;
+		right_position = HEIGHT / 2;
+		
+		ball_x = WIDTH / 2;
+		ball_y = HEIGHT / 2;
+		ball_direction_x = 1;
+		ball_direction_y = 0;
+
+		left_score = 0;
+		right_score = 0;
 	}
 	
 	void draw()
@@ -121,20 +160,19 @@ public:
 		
 		al_clear_to_color(background_color);
 		
-		for(int j = 0; j < 4; j++)
+		for(int i = 0; i < 4; i++)
 		{
-			for(int i = 0; i < 5; i++)
+			for(int j = 0; j < 5; j++)
 			{
 				ALLEGRO_COLOR tmp;
-				if(numbers[left_score % 10][i][j])
+				if(numbers[left_score % 10][j][i])
 					tmp = gr;
 				else
 					tmp = bl;
-				al_draw_filled_rectangle(WIDTH / 4 + BALL_SIZE * j + BALL_SIZE * 5, HEIGHT / 3 + BALL_SIZE * i, WIDTH / 4 + BALL_SIZE * (j + 1) + BALL_SIZE * 5,  HEIGHT / 3 + BALL_SIZE * (i + 1), tmp);
-		
+				al_draw_filled_rectangle(WIDTH / 2 + BALL_SIZE * (i - 7), BALL_SIZE * (j + 1), WIDTH / 2 + BALL_SIZE * (i - 6), BALL_SIZE * (j + 2), tmp);
 			}
 		}
-		
+		//TODO
 		for(int j = 0; j < 4; j++)
 		{
 			for(int i = 0; i < 5; i++)
@@ -144,11 +182,11 @@ public:
 					tmp = gr;
 				else
 					tmp = bl;
-				al_draw_filled_rectangle(WIDTH / 4 + BALL_SIZE * j, HEIGHT / 3 + BALL_SIZE * i, WIDTH / 4 + BALL_SIZE * (j + 1),  HEIGHT / 3 + BALL_SIZE * (i + 1), tmp);
-		
+				al_draw_filled_rectangle(WIDTH / 2 + BALL_SIZE * (j - 12), BALL_SIZE * (i + 1), WIDTH / 2 + BALL_SIZE * (j - 11), BALL_SIZE * (i + 2), tmp);
 			}
 		}
 
+		//TODO
 		for(int j = 0; j < 4; j++)
 		{
 			for(int i = 0; i < 5; i++)
@@ -158,11 +196,11 @@ public:
 					tmp = gr;
 				else
 					tmp = bl;
-				al_draw_filled_rectangle((WIDTH * 3) / 4 + BALL_SIZE * j, HEIGHT / 3 + BALL_SIZE * i, (WIDTH * 3) / 4 + BALL_SIZE * (j + 1),  HEIGHT / 3 + BALL_SIZE * (i + 1), tmp);
-		
+				al_draw_filled_rectangle(WIDTH / 2 + BALL_SIZE * (j + 8), BALL_SIZE * (i + 1), WIDTH / 2 + BALL_SIZE * (j + 9), BALL_SIZE * (i + 2), tmp);
 			}
 		}
 		
+		//TODO
 		for(int j = 0; j < 4; j++)
 		{
 			for(int i = 0; i < 5; i++)
@@ -172,8 +210,7 @@ public:
 					tmp = gr;
 				else
 					tmp = bl;
-				al_draw_filled_rectangle((WIDTH * 3) / 4 + BALL_SIZE * j - BALL_SIZE * 5, HEIGHT / 3 + BALL_SIZE * i, (WIDTH * 3) / 4 + BALL_SIZE * (j + 1) - BALL_SIZE * 5,  HEIGHT / 3 + BALL_SIZE * (i + 1), tmp);
-		
+				al_draw_filled_rectangle(WIDTH / 2 + BALL_SIZE * (j + 3), BALL_SIZE * (i + 1), WIDTH / 2 + BALL_SIZE * (j + 4), BALL_SIZE * (i + 2), tmp);
 			}
 		}
 		al_draw_filled_rectangle(WIDTH / 2 - BAR_WIDTH / 2, 0, WIDTH / 2 + BAR_WIDTH / 2, HEIGHT, gr);
@@ -218,7 +255,7 @@ public:
 	void end()
 	{
 		cout << "GAME ENDED!\n";
-		cout << "SCORE: " << left_score << " - " << right_score << "\n";
+		print_score();
 		std::unique_lock<std::mutex> lock(mutex_end);
 		game_end = true;
 		cv_end.notify_all();
@@ -279,7 +316,7 @@ public:
 					std::unique_lock<std::mutex> lock2(mutex_left);			
 					if(abs(ball_y - left_position) <= BAR_HEIGHT / 2)
 					{
-						ball_direction_x *= -1;
+						ball_dierction_x_flip();
 						ball_direction_y = (ball_y - left_position)  / (BAR_HEIGHT / 8);
 					}
 				}
@@ -288,7 +325,7 @@ public:
 					std::unique_lock<std::mutex> lock2(mutex_right);			
 					if(abs(ball_y - right_position) <= BAR_HEIGHT / 2)
 					{
-						ball_direction_x *= -1;
+						ball_dierction_x_flip();
 						ball_direction_y = (ball_y - right_position) / (BAR_HEIGHT / 8);
 					}
 				}
@@ -316,7 +353,10 @@ public:
 		std::unique_lock<std::mutex> lock2(mutex_right);
 		ball_x = WIDTH / 2;
 		ball_y = HEIGHT / 2;
-		ball_direction_x = 1;
+		if(ball_direction_x < 0)
+			ball_direction_x = -1;
+		else
+			ball_direction_x = 1;
 		ball_direction_y = 0;
 	}
 };
@@ -362,6 +402,10 @@ void player_input_manager(pong_game &game)
 					case ALLEGRO_KEY_DOWN:
 						game.right_dir_set(1);
 						break;
+					
+					case ALLEGRO_KEY_R:
+						game.restart(true);
+						break;
 						
 					case ALLEGRO_KEY_TAB:
 					case ALLEGRO_KEY_LSHIFT:
@@ -405,11 +449,6 @@ void player_input_manager(pong_game &game)
 					case ALLEGRO_KEY_RCTRL:
 					case ALLEGRO_KEY_ALT:
 					case ALLEGRO_KEY_ALTGR:
-						break;
-
-					default:
-						game.end();
-						run = false;
 						break;
 				}
 				break;
