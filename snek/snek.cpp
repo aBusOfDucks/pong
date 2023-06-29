@@ -33,8 +33,7 @@ private:
 
     std::random_device dev;
     std::mt19937 rng;
-    std::uniform_int_distribution<std::mt19937::result_type> poz_x_generator;
-    std::uniform_int_distribution<std::mt19937::result_type> poz_y_generator;
+    std::uniform_int_distribution<std::mt19937::result_type> apple_generator;
 
 
     ALLEGRO_DISPLAY * display;
@@ -47,7 +46,6 @@ private:
 
     void generate_apple()
     {
-        // TODO: optimise for large snakes
         int ax, ay;
         {
             std::unique_lock <std::mutex> lock(mutex_poz_dir);
@@ -56,9 +54,23 @@ private:
         }
         {
             std::unique_lock <std::mutex> lock(mutex_board_size);
-            while (board[ax][ay] > 0) {
-                ax = poz_x_generator(rng);
-                ay = poz_y_generator(rng);
+            apple_generator = std::uniform_int_distribution<std::mt19937::result_type>(1, BOARD_WIDTH * BOARD_HEIGHT -
+                                                                                          size);
+            int temp = apple_generator(rng);
+            for (int i = 0; i < BOARD_WIDTH; i++)
+            {
+                 for (int j = 0; j < BOARD_HEIGHT; j++)
+                 {
+                     if(board[i][j] == 0)
+                         temp--;
+                     if(temp == 0)
+                     {
+                         ax = i;
+                         ay = j;
+                         i = BOARD_WIDTH;
+                         break;
+                     }
+                 }
             }
         }
         {
@@ -90,8 +102,7 @@ public:
 	
 	void set()
 	{
-        poz_x_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, BOARD_WIDTH - 1);
-        poz_y_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, BOARD_HEIGHT - 1);
+        apple_generator = std::uniform_int_distribution<std::mt19937::result_type>(1, BOARD_WIDTH * BOARD_HEIGHT);
         rng = std::mt19937(dev());
 
         size = 1;
