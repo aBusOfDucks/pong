@@ -5,21 +5,32 @@
 #include <condition_variable>
 #include <random>
 #include <iostream>
+#include <queue>
 
 #define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 1200
+
 #define SNEK_SPEED 15
 #define SNEK_SIZE 60
+
 #define SNEK_COLOR al_map_rgb(0, 255, 0)
 #define APPLE_COLOR al_map_rgb(255,0, 0)
 #define BACKGROUND_COLOR al_map_rgb(0,0, 0)
+
 #define BOARD_WIDTH WINDOW_WIDTH / SNEK_SIZE
 #define BOARD_HEIGHT WINDOW_HEIGHT / SNEK_SIZE
 
+#define UP 1
+#define DOWN 2
+#define LEFT 3
+#define RIGHT 4
+#define NONE 0
 
 class snek{
 private:
-
+    std::mutex mutex_order_queue;
+    std::queue <int> order_queue;
+    int last_added = NONE;
 
     std::mutex mutex_board_size;
     int board[WINDOW_WIDTH / SNEK_SIZE][WINDOW_HEIGHT / SNEK_SIZE];
@@ -29,7 +40,6 @@ private:
     int poz_x, poz_y;
     int dx, dy;
     int apple_x, apple_y;
-    bool moved = false;
 
     std::random_device dev;
     std::mt19937 rng;
@@ -77,13 +87,54 @@ private:
             std::unique_lock <std::mutex> lock(mutex_poz_dir);
             apple_x = ax;
             apple_y = ay;
-            std::cout << "Apple at: " << ax << " " << ay << "\n";
+        }
+    }
+
+    void set_direction()
+    {
+        int order;
+        {
+            std::unique_lock<std::mutex> lock(mutex_order_queue);
+            if(order_queue.empty())
+                return;
+            order = order_queue.front();
+            order_queue.pop();
+        }
+        int x = 0, y = 0;
+        if(order == NONE)
+            return;
+        if(order == UP)
+            y = -1;
+        if(order == DOWN)
+            y = 1;
+        if(order == LEFT)
+            x = -1;
+        if(order == RIGHT)
+            x = 1;
+
+        std::unique_lock<std::mutex> lock(mutex_poz_dir);
+        if(x == 0 && y != 0)
+        {
+            if(dx != 0)
+            {
+                dx = x;
+                dy = y;
+            }
+        }
+        if(x != 0 && y == 0)
+        {
+            if(dy != 0)
+            {
+                dx = x;
+                dy = y;
+            }
         }
     }
 
 public:
 	void draw()
 	{
+        // TODO: make it look nicer.
         al_clear_to_color(BACKGROUND_COLOR);
         {
             std::unique_lock <std::mutex> lock(mutex_board_size);
@@ -119,9 +170,14 @@ public:
             poz_x = BOARD_WIDTH / 2;
             poz_y = BOARD_HEIGHT / 2;
             board[poz_x][poz_y] = size;
-            moved = false;
         }
         generate_apple();
+        {
+            std::unique_lock <std::mutex> lock(mutex_order_queue);
+            last_added = NONE;
+            while(!order_queue.empty())
+                order_queue.pop();
+        }
     }
 	
 	bool move()
@@ -152,7 +208,6 @@ public:
             y = poz_y;
             ax = apple_x;
             ay = apple_y;
-            moved = true;
         }
         {
             std::unique_lock <std::mutex> lock(mutex_board_size);
@@ -168,33 +223,22 @@ public:
         }
         if(gen)
             generate_apple();
+        set_direction();
         return true;
 	}
 
-    void set_direction(int x, int y)
+    void send_order(int order)
     {
-        std::unique_lock<std::mutex> lock(mutex_poz_dir);
-        // TODO: queue orders insted of ignoring
-        if(!moved)
-            return;
-        moved = false;
-        if(x == 0 && y != 0)
         {
-            if(dx != 0)
-            {
-                dx = x;
-                dy = y;
-            }
+            std::unique_lock <std::mutex> lock(mutex_order_queue);
+            if (order == last_added)
+                return;
+            order_queue.push(order);
+            last_added = order;
         }
-        if(x != 0 && y == 0)
-        {
-            if(dy != 0)
-            {
-                dx = x;
-                dy = y;
-            }
-        }
+        set_direction();
     }
+
     void set_display(ALLEGRO_DISPLAY * d)
     {
         std::unique_lock<std::mutex> lock(mutex_display);
@@ -245,19 +289,19 @@ void player_input_manager(snek & game)
                 switch(event.keyboard.keycode)
                 {
                     case ALLEGRO_KEY_W:
-                        game.set_direction(0, -1);
+                        game.send_order(UP);
                         break;
 
                     case ALLEGRO_KEY_S:
-                        game.set_direction(0, 1);
+                        game.send_order(DOWN);
                         break;
 
                     case ALLEGRO_KEY_A:
-                        game.set_direction(-1, 0);
+                        game.send_order(LEFT);
                         break;
 
                     case ALLEGRO_KEY_D:
-                        game.set_direction(1, 0);
+                        game.send_order(RIGHT);
                         break;
 
                     case ALLEGRO_KEY_R:
@@ -273,7 +317,7 @@ void player_input_manager(snek & game)
                     case ALLEGRO_KEY_ALTGR:
                         break;
 
-                    default:
+                    case ALLEGRO_KEY_ESCAPE:
                         game.end();
                         run = false;
                         break;
@@ -303,8 +347,8 @@ void create_display(snek & game)
         game.draw();
         if(!game.move())
         {
-            std::cout << "END!\n";
             game.set();
+            usleep(1000000);
         }
         usleep(1000000 / SNEK_SPEED);
     }
