@@ -11,14 +11,16 @@
 #define WINDOW_HEIGHT 1200
 
 #define SNEK_SPEED 15
-#define SNEK_SIZE 60
+#define CELL_SIZE 60
+#define CELL_LINE_SIZE CELL_SIZE / 15
 
 #define SNEK_COLOR al_map_rgb(0, 255, 0)
 #define APPLE_COLOR al_map_rgb(255,0, 0)
 #define BACKGROUND_COLOR al_map_rgb(0,0, 0)
+#define CELL_COLOR al_map_rgb(50, 50, 50)
 
-#define BOARD_WIDTH WINDOW_WIDTH / SNEK_SIZE
-#define BOARD_HEIGHT WINDOW_HEIGHT / SNEK_SIZE
+#define BOARD_WIDTH WINDOW_WIDTH / CELL_SIZE
+#define BOARD_HEIGHT WINDOW_HEIGHT / CELL_SIZE
 
 #define UP 1
 #define DOWN 2
@@ -31,9 +33,10 @@ private:
     std::mutex mutex_order_queue;
     std::queue <int> order_queue;
     int last_added = NONE;
+    bool moved;
 
     std::mutex mutex_board_size;
-    int board[WINDOW_WIDTH / SNEK_SIZE][WINDOW_HEIGHT / SNEK_SIZE];
+    int board[BOARD_WIDTH][BOARD_HEIGHT];
     int size;
 
     std::mutex mutex_poz_dir;
@@ -95,10 +98,13 @@ private:
         int order;
         {
             std::unique_lock<std::mutex> lock(mutex_order_queue);
+            if(!moved)
+                return;
             if(order_queue.empty())
                 return;
             order = order_queue.front();
             order_queue.pop();
+            moved = false;
         }
         int x = 0, y = 0;
         if(order == NONE)
@@ -131,22 +137,59 @@ private:
         }
     }
 
+    void draw_snek_head(int x, int y)
+    {
+            al_draw_filled_rectangle(x * CELL_SIZE + CELL_SIZE / 4, y * CELL_SIZE + CELL_SIZE / 4, (x + 1) * CELL_SIZE - CELL_SIZE / 4, (y + 1) * CELL_SIZE - CELL_SIZE / 4,
+                                     SNEK_COLOR);
+    }
+
+    void draw_snek_segment(int x, int y)
+    {
+        int nx = x, ny = (y + BOARD_HEIGHT - 1) % (BOARD_HEIGHT);
+        if(board[nx][ny] != 0 && abs(board[nx][ny] - board[x][y]) == 1)
+            al_draw_filled_rectangle(x * CELL_SIZE + CELL_SIZE / 4, y * CELL_SIZE, (x + 1) * CELL_SIZE - CELL_SIZE / 4, (y + 1) * CELL_SIZE - CELL_SIZE / 4,
+                                     SNEK_COLOR);
+
+        int sx = x, sy = (y + 1) % (BOARD_HEIGHT);
+        if(board[sx][sy] != 0 && abs(board[sx][sy] - board[x][y]) == 1)
+            al_draw_filled_rectangle(x * CELL_SIZE + CELL_SIZE / 4, y * CELL_SIZE + CELL_SIZE / 4, (x + 1) * CELL_SIZE - CELL_SIZE / 4, (y + 1) * CELL_SIZE,
+                                     SNEK_COLOR);
+
+        int ex = (x + 1) % (BOARD_WIDTH), ey = y;
+        if(board[ex][ey] != 0 && abs(board[ex][ey] - board[x][y]) == 1)
+            al_draw_filled_rectangle(x * CELL_SIZE + CELL_SIZE / 4, y * CELL_SIZE + CELL_SIZE / 4, (x + 1) * CELL_SIZE, (y + 1) * CELL_SIZE - CELL_SIZE / 4,
+                                     SNEK_COLOR);
+
+        int wx = (x + BOARD_WIDTH - 1) % (BOARD_WIDTH), wy = y;
+        if(board[wx][wy] != 0 && abs(board[wx][wy] - board[x][y]) == 1)
+            al_draw_filled_rectangle(x * CELL_SIZE, y * CELL_SIZE + CELL_SIZE / 4, (x + 1) * CELL_SIZE - CELL_SIZE / 4, (y + 1) * CELL_SIZE - CELL_SIZE / 4,
+                                     SNEK_COLOR);
+    }
+
 public:
 	void draw()
 	{
-        // TODO: make it look nicer.
         al_clear_to_color(BACKGROUND_COLOR);
+        for (int i = 0; i < BOARD_WIDTH; i++)
+            for (int j = 0; j < BOARD_HEIGHT; j++)
+                al_draw_filled_rectangle(i * CELL_SIZE + CELL_LINE_SIZE, j * CELL_SIZE + CELL_LINE_SIZE, (i + 1) * CELL_SIZE - CELL_LINE_SIZE, (j + 1) * CELL_SIZE - CELL_LINE_SIZE,
+                                         CELL_COLOR);
         {
             std::unique_lock <std::mutex> lock(mutex_board_size);
             for (int i = 0; i < BOARD_WIDTH; i++)
+            {
                 for (int j = 0; j < BOARD_HEIGHT; j++)
+                {
                     if (board[i][j] > 0)
-                        al_draw_filled_rectangle(i * SNEK_SIZE, j * SNEK_SIZE, (i + 1) * SNEK_SIZE, (j + 1) * SNEK_SIZE,
-                                                 SNEK_COLOR);
+                        draw_snek_segment(i, j);
+                    if (board[i][j] == size)
+                        draw_snek_head(i, j);
+                }
+            }
         }
         {
             std::unique_lock <std::mutex> lock(mutex_board_size);
-            al_draw_filled_rectangle(apple_x * SNEK_SIZE, apple_y * SNEK_SIZE, (apple_x + 1) * SNEK_SIZE,(apple_y + 1) * SNEK_SIZE, APPLE_COLOR);
+            al_draw_filled_rectangle(apple_x * CELL_SIZE + CELL_LINE_SIZE, apple_y * CELL_SIZE + CELL_LINE_SIZE, (apple_x + 1) * CELL_SIZE - CELL_LINE_SIZE,(apple_y + 1) * CELL_SIZE - CELL_LINE_SIZE, APPLE_COLOR);
         }
         al_flip_display();
     }
@@ -217,12 +260,20 @@ public:
             if(x == ax && y == ay)
             {
                 size++;
-                board[x][y]++;
+              //  board[x][y]++;
                 gen = true;
+                for (int i = 0; i < BOARD_WIDTH; i++)
+                    for (int j = 0; j < BOARD_HEIGHT; j++)
+                        if (board[i][j] > 0)
+                            board[i][j]++;
             }
         }
         if(gen)
             generate_apple();
+        {
+            std::unique_lock <std::mutex> lock(mutex_order_queue);
+            moved = true;
+        }
         set_direction();
         return true;
 	}
