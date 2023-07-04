@@ -13,8 +13,10 @@
 #define SNEK_SPEED 15
 #define CELL_SIZE 60
 #define CELL_LINE_SIZE CELL_SIZE / 15
+#define EYE_SIZE 5
 
 #define SNEK_COLOR al_map_rgb(0, 255, 0)
+#define SNEK_EYE_COLOR al_map_rgb(0, 0, 0)
 #define APPLE_COLOR al_map_rgb(255,0, 0)
 #define BACKGROUND_COLOR al_map_rgb(0,0, 0)
 #define CELL_COLOR al_map_rgb(50, 50, 50)
@@ -137,10 +139,30 @@ private:
         }
     }
 
-    void draw_snek_head(int x, int y)
+    void draw_snek_head(int x, int y, int dir_x, int dir_y)
     {
-            al_draw_filled_rectangle(x * CELL_SIZE + CELL_SIZE / 4, y * CELL_SIZE + CELL_SIZE / 4, (x + 1) * CELL_SIZE - CELL_SIZE / 4, (y + 1) * CELL_SIZE - CELL_SIZE / 4,
+        al_draw_filled_rectangle(x * CELL_SIZE, y * CELL_SIZE, (x + 1) * CELL_SIZE, (y + 1) * CELL_SIZE,
                                      SNEK_COLOR);
+        if(dir_x == 1)
+        {
+            al_draw_filled_rectangle(x * CELL_SIZE + CELL_SIZE * 2 / 3, y * CELL_SIZE + CELL_SIZE * 1 / 3, (x + 1) * CELL_SIZE, y * CELL_SIZE + CELL_SIZE * 1 / 3 + EYE_SIZE,SNEK_EYE_COLOR);
+            al_draw_filled_rectangle(x * CELL_SIZE + CELL_SIZE * 2 / 3, y * CELL_SIZE + CELL_SIZE * 2 / 3, (x + 1) * CELL_SIZE, y * CELL_SIZE + CELL_SIZE * 2 / 3 + EYE_SIZE,SNEK_EYE_COLOR);
+        }
+        if(dir_x == -1)
+        {
+            al_draw_filled_rectangle(x * CELL_SIZE, y * CELL_SIZE + CELL_SIZE * 1 / 3, x * CELL_SIZE + CELL_SIZE * 1 / 3, y * CELL_SIZE + CELL_SIZE * 1 / 3 + EYE_SIZE,SNEK_EYE_COLOR);
+            al_draw_filled_rectangle(x * CELL_SIZE, y * CELL_SIZE + CELL_SIZE * 2 / 3, x * CELL_SIZE + CELL_SIZE * 1 / 3, y * CELL_SIZE + CELL_SIZE * 2 / 3 + EYE_SIZE,SNEK_EYE_COLOR);
+        }
+        if(dir_y == 1)
+        {
+            al_draw_filled_rectangle(x * CELL_SIZE + CELL_SIZE * 1 / 3, y * CELL_SIZE + CELL_SIZE * 2 / 3, x * CELL_SIZE + CELL_SIZE * 1 / 3 + EYE_SIZE, (y + 1) * CELL_SIZE,SNEK_EYE_COLOR);
+            al_draw_filled_rectangle(x * CELL_SIZE + CELL_SIZE * 2 / 3, y * CELL_SIZE + CELL_SIZE * 2 / 3, x * CELL_SIZE + CELL_SIZE * 2 / 3 + EYE_SIZE, (y + 1) * CELL_SIZE,SNEK_EYE_COLOR);
+        }
+        if(dir_y == -1)
+        {
+            al_draw_filled_rectangle(x * CELL_SIZE + CELL_SIZE * 1 / 3, y * CELL_SIZE, x * CELL_SIZE + CELL_SIZE * 1 / 3 + EYE_SIZE, y * CELL_SIZE + CELL_SIZE * 1 / 3,SNEK_EYE_COLOR);
+            al_draw_filled_rectangle(x * CELL_SIZE + CELL_SIZE * 2 / 3, y * CELL_SIZE, x * CELL_SIZE + CELL_SIZE * 2 / 3 + EYE_SIZE, y * CELL_SIZE + CELL_SIZE * 1 / 3,SNEK_EYE_COLOR);
+        }
     }
 
     void draw_snek_segment(int x, int y)
@@ -174,16 +196,22 @@ public:
             for (int j = 0; j < BOARD_HEIGHT; j++)
                 al_draw_filled_rectangle(i * CELL_SIZE + CELL_LINE_SIZE, j * CELL_SIZE + CELL_LINE_SIZE, (i + 1) * CELL_SIZE - CELL_LINE_SIZE, (j + 1) * CELL_SIZE - CELL_LINE_SIZE,
                                          CELL_COLOR);
+        int dir_x, dir_y;
+        {
+            std::unique_lock <std::mutex> lock(mutex_poz_dir);
+            dir_x = dx;
+            dir_y = dy;
+        }
         {
             std::unique_lock <std::mutex> lock(mutex_board_size);
             for (int i = 0; i < BOARD_WIDTH; i++)
             {
                 for (int j = 0; j < BOARD_HEIGHT; j++)
                 {
-                    if (board[i][j] > 0)
+                    if (board[i][j] > 0 && board[i][j] != size)
                         draw_snek_segment(i, j);
                     if (board[i][j] == size)
-                        draw_snek_head(i, j);
+                        draw_snek_head(i, j, dir_x, dir_y);
                 }
             }
         }
