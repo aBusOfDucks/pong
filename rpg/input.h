@@ -13,7 +13,7 @@
 #include "const.h"
 #include "player.h"
 
-void player_input_manager(game & g, player & p)
+void player_input_manager(game & g)
 {
     g.get_display();
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
@@ -35,19 +35,19 @@ void player_input_manager(game & g, player & p)
                 switch(event.keyboard.keycode)
                 {
                     case ALLEGRO_KEY_W:
-                        p.move(UP);
+                        g.move(UP);
                         break;
 
                     case ALLEGRO_KEY_S:
-                        p.move(DOWN);
+                        g.move(DOWN);
                         break;
 
                     case ALLEGRO_KEY_A:
-                        p.move(LEFT);
+                        g.move(LEFT);
                         break;
 
                     case ALLEGRO_KEY_D:
-                        p.move(RIGHT);
+                        g.move(RIGHT);
                         break;
 
                     case ALLEGRO_KEY_R:

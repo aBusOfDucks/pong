@@ -39,7 +39,7 @@ int main()
     init(g, p);
 
     std::thread display([&g]{create_display(g);});
-    std::thread input([&g, &p]{player_input_manager(g, p);});
+    std::thread input([&g]{player_input_manager(g);});
     input.join();
     display.join();
     return 0;

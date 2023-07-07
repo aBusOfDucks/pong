@@ -41,16 +41,20 @@ public:
         y += dy;
     }
 
-    void trim()
+    void trim(int max_x, int max_y)
     {
         if (x < 0)
             x = 0;
         if (y < 0)
             y = 0;
-        if (x >= MAP_WIDTH)
-            x = MAP_WIDTH - 1;
-        if (y >= MAP_HEIGHT)
-            y = MAP_HEIGHT - 1;
+        if (x >= max_x)
+            x = max_x - 1;
+        if (y >= max_y)
+            y = max_y - 1;
+    }
+    void trim()
+    {
+        trim(MAP_WIDTH, MAP_HEIGHT);
     }
 };
 

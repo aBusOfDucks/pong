@@ -13,6 +13,9 @@
 #include "coordinate.h"
 #include "player.h"
 
+#define CAMERA_WIDTH WINDOW_WIDTH / MAP_CELL_SIZE
+#define CAMERA_HEIGHT WINDOW_HEIGHT / MAP_CELL_SIZE
+
 class game{
 private:
     ALLEGRO_DISPLAY * display;
@@ -73,6 +76,12 @@ public:
     {
         std::unique_lock<std::mutex> lock(mutex_end);
         return game_ended;
+    }
+    void move(int direction)
+    {
+        p->move(direction);
+        camera_position = p->get_position() - coordinate(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2);
+        camera_position.trim(MAP_WIDTH - CAMERA_WIDTH + 1, MAP_HEIGHT - CAMERA_HEIGHT + 1);
     }
 };
 
