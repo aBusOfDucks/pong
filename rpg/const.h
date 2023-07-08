@@ -1,8 +1,8 @@
 #ifndef __CONST_H__
 #define __CONST_H__
 
-#define WINDOW_WIDTH 1200
-#define WINDOW_HEIGHT 1200
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 800
 
 #define MAP_WIDTH 51
 #define MAP_HEIGHT 51
@@ -15,7 +15,9 @@
 #define DOWN 1
 #define LEFT 2
 #define RIGHT 3
+#define NONE 4
 
 #define FPS 100
+#define TPS 5
 
 #endif /* __CONST_H__ */

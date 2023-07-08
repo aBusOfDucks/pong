@@ -40,6 +40,9 @@ int main()
 
     std::thread display([&g]{create_display(g);});
     std::thread input([&g]{player_input_manager(g);});
+    std::thread game_loop([&g]{g.game_loop();});
+
+    game_loop.join();
     input.join();
     display.join();
     return 0;

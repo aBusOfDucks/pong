@@ -29,6 +29,20 @@ private:
     coordinate camera_position;
 
     player * p;
+    int player_direction;
+
+    void move()
+    {
+        p->move();
+        camera_position = p->get_position() - coordinate(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2);
+        camera_position.trim(MAP_WIDTH - CAMERA_WIDTH + 1, MAP_HEIGHT - CAMERA_HEIGHT + 1);
+    }
+
+    void tick()
+    {
+        std::cout << "Player at: " << p->get_position().x << " " << p->get_position().y << "\n";
+        move();
+    }
 
 public:
     void draw()
@@ -77,11 +91,39 @@ public:
         std::unique_lock<std::mutex> lock(mutex_end);
         return game_ended;
     }
-    void move(int direction)
+
+    void game_loop()
     {
-        p->move(direction);
-        camera_position = p->get_position() - coordinate(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2);
-        camera_position.trim(MAP_WIDTH - CAMERA_WIDTH + 1, MAP_HEIGHT - CAMERA_HEIGHT + 1);
+        bool run = true;
+        while(run)
+        {
+            tick();
+            usleep(1000000 / TPS);
+            {
+                std::unique_lock<std::mutex> lock(mutex_end);
+                run = !game_ended;
+            }
+        }
+    }
+
+    void change_direction(int dir)
+    {
+        if(dir == UP)
+        {
+            p->change_direction(0, -1);
+        }
+        if(dir == DOWN)
+        {
+            p->change_direction(0, 1);
+        }
+        if(dir == LEFT)
+        {
+            p->change_direction(-1, 0);
+        }
+        if(dir == RIGHT)
+        {
+            p->change_direction(1, 0);
+        }
     }
 };
 

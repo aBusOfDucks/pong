@@ -35,6 +35,12 @@ public:
         return ans;
     }
 
+    void set(int new_x, int new_y)
+    {
+        x = new_x;
+        y = new_y;
+    }
+
     void change(int dx, int dy)
     {
         x += dx;

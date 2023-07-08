@@ -15,25 +15,36 @@
 class player{
 private:
 
+    std::mutex mutex_position;
     coordinate position;
+    int direction_x;
+    int direction_y;
 
 public:
 
-    void move(int direction)
+    player()
     {
-        if(direction == UP)
-            position.change(0, -1);
-        if(direction == DOWN)
-            position.change(0, 1);
-        if(direction == RIGHT)
-            position.change(1, 0);
-        if(direction == LEFT)
-            position.change(-1, 0);
+        direction_x = 0;
+        direction_y = 0;
+        position.set(0, 0);
+    }
+    void move()
+    {
+        std::unique_lock<std::mutex> lock(mutex_position);
+        position.change(direction_x, direction_y);
         position.trim();
+    }
+
+    void change_direction(int dx, int dy)
+    {
+        std::unique_lock<std::mutex> lock(mutex_position);
+        direction_x += dx;
+        direction_y += dy;
     }
 
     coordinate get_position()
     {
+        std::unique_lock<std::mutex> lock(mutex_position);
         return position;
     }
 

@@ -35,19 +35,19 @@ void player_input_manager(game & g)
                 switch(event.keyboard.keycode)
                 {
                     case ALLEGRO_KEY_W:
-                        g.move(UP);
+                        g.change_direction(UP);
                         break;
 
                     case ALLEGRO_KEY_S:
-                        g.move(DOWN);
+                        g.change_direction(DOWN);
                         break;
 
                     case ALLEGRO_KEY_A:
-                        g.move(LEFT);
+                        g.change_direction(LEFT);
                         break;
 
                     case ALLEGRO_KEY_D:
-                        g.move(RIGHT);
+                        g.change_direction(RIGHT);
                         break;
 
                     case ALLEGRO_KEY_R:
@@ -69,6 +69,27 @@ void player_input_manager(game & g)
                         break;
                 }
                 break;
+            case ALLEGRO_EVENT_KEY_UP:
+                switch(event.keyboard.keycode)
+                {
+                    case ALLEGRO_KEY_W:
+                        g.change_direction(DOWN);
+                        break;
+
+                    case ALLEGRO_KEY_S:
+                        g.change_direction(UP);
+                        break;
+
+                    case ALLEGRO_KEY_A:
+                        g.change_direction(RIGHT);
+                        break;
+
+                    case ALLEGRO_KEY_D:
+                        g.change_direction(LEFT);
+                        break;
+                }
+                break;
+
         }
     }
     al_destroy_event_queue(queue);
