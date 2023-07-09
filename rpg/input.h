@@ -27,10 +27,15 @@ void player_input_manager(game & g)
         al_wait_for_event(queue, &event);
         switch(event.type)
         {
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                g.click(event.mouse.x, event.mouse.y);
+                break;
+
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 g.end();
                 run = false;
                 break;
+
             case ALLEGRO_EVENT_KEY_DOWN:
                 switch(event.keyboard.keycode)
                 {

@@ -58,9 +58,16 @@ public:
         if (y >= max_y)
             y = max_y - 1;
     }
+
     void trim()
     {
         trim(MAP_WIDTH, MAP_HEIGHT);
+    }
+
+    void scale(int m)
+    {
+        x *= m;
+        y *= m;
     }
 };
 

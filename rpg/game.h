@@ -12,9 +12,11 @@
 #include "const.h"
 #include "coordinate.h"
 #include "player.h"
+#include "projectile.h"
+#include <set>
 
-#define CAMERA_WIDTH WINDOW_WIDTH / MAP_CELL_SIZE
-#define CAMERA_HEIGHT WINDOW_HEIGHT / MAP_CELL_SIZE
+#define CAMERA_WIDTH (WINDOW_WIDTH / MAP_CELL_SIZE)
+#define CAMERA_HEIGHT (WINDOW_HEIGHT / MAP_CELL_SIZE)
 
 class game{
 private:
@@ -31,6 +33,10 @@ private:
     player * p;
     int player_direction;
 
+    projectile projectiles[MAX_PROJECTILES];
+    bool projectile_slot_used[MAX_PROJECTILES];
+    int used_projectiles = 0;
+
     void move()
     {
         p->move();
@@ -42,6 +48,18 @@ private:
     {
         std::cout << "Player at: " << p->get_position().x << " " << p->get_position().y << "\n";
         move();
+        for(int i = 0; i < MAX_PROJECTILES; i++)
+        {
+            if (projectile_slot_used[i])
+            {
+                projectiles[i].move();
+                if (!projectiles[i].check())
+                {
+                    projectile_slot_used[i] = false;
+                    used_projectiles--;
+                }
+            }
+        }
     }
 
 public:
@@ -59,12 +77,24 @@ public:
                 al_draw_filled_rectangle(draw_x, draw_y, draw_x + MAP_CELL_SIZE, draw_y +  MAP_CELL_SIZE, PLAYER_COLOR);
             }
         }
+        for(int i = 0; i < MAX_PROJECTILES; i++)
+        {
+            if (projectile_slot_used[i])
+            {
+                projectiles[i].draw(camera_position);
+            }
+        }
         al_flip_display();
     }
+
     void set(player * pl)
     {
         p = pl;
+        used_projectiles = 0;
+        for(int i = 0; i < MAX_PROJECTILES; i++)
+            projectile_slot_used[i] = false;
     }
+
     void set_display(ALLEGRO_DISPLAY * d)
     {
         std::unique_lock<std::mutex> lock(mutex_display);
@@ -123,6 +153,21 @@ public:
         if(dir == RIGHT)
         {
             p->change_direction(1, 0);
+        }
+    }
+
+    void click(int x, int y)
+    {
+        if(used_projectiles < MAX_PROJECTILES)
+        {
+            for(int i = 0; i < MAX_PROJECTILES; i++)
+                if(!projectile_slot_used[i])
+                {
+                    projectile_slot_used[i] = true;
+                    projectiles[i].set(camera_position.x * MAP_CELL_SIZE + x, camera_position.y * MAP_CELL_SIZE + y, 5, 5);
+                    used_projectiles++;
+                    i = MAX_PROJECTILES;
+                }
         }
     }
 };
