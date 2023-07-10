@@ -11,8 +11,8 @@ class projectile{
 public:
 
     std::mutex mutex_position;
-    coordinate position;
-    int dx, dy;
+    double x, y;
+    double dx, dy;
 
     projectile()
     {
@@ -20,24 +20,24 @@ public:
         dy = 0;
     }
 
-    projectile(coordinate camera, int x, int y)
+    projectile(coordinate camera, int mouse_x, int mouse_y)
     {
-        position = camera;
-        position.scale(MAP_CELL_SIZE);
-        position.change(x, y);
+        x = camera.x * MAP_CELL_SIZE + mouse_x;
+        y = camera.y * MAP_CELL_SIZE + mouse_y;
     }
 
     void move()
     {
         std::unique_lock<std::mutex> lock(mutex_position);
-        position.change(dx, dy);
+        x += dx;
+        y += dy;
     }
 
     bool check()
     {
-        if(position.x < 0 || position.y < 0)
+        if(x < 0 || y < 0)
             return false;
-        if(position.x >= MAP_WIDTH * MAP_CELL_SIZE || position.y >= MAP_HEIGHT * MAP_CELL_SIZE)
+        if(x >= MAP_WIDTH * MAP_CELL_SIZE || y >= MAP_HEIGHT * MAP_CELL_SIZE)
             return false;
         return true;
     }
@@ -45,18 +45,19 @@ public:
     void draw(coordinate camera)
     {
         camera.scale(MAP_CELL_SIZE);
-        if(position.x < camera.x || position.y < camera.y)
+        if(x < camera.x || y < camera.y)
             return;
-        if(position.x >= camera.x + WINDOW_WIDTH || position.y >= camera.y + WINDOW_HEIGHT)
+        if(x >= camera.x + WINDOW_WIDTH || y >= camera.y + WINDOW_HEIGHT)
             return;
-        int draw_x = position.x - camera.x;
-        int draw_y = position.y - camera.y;
+        int draw_x = x - camera.x;
+        int draw_y = y - camera.y;
         al_draw_filled_rectangle(draw_x, draw_y, draw_x + PROJECTILE_SIZE, draw_y +  PROJECTILE_SIZE, PROJECTILE_COLOR);
     }
 
-    const void set(int x, int y, int new_dx, int new_dy)
+    const void set(int new_x, int new_y, double new_dx, double new_dy)
     {
-        position.set(x, y);
+        x = new_x;
+        y = new_y;
         dx = new_dx;
         dy = new_dy;
     }

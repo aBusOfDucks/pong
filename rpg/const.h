@@ -22,5 +22,6 @@
 #define FPS 100
 #define TPS 5
 #define MAX_PROJECTILES 1000
+#define PROJECTILE_SPEED 10
 
 #endif /* __CONST_H__ */

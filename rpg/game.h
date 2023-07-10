@@ -164,7 +164,14 @@ public:
                 if(!projectile_slot_used[i])
                 {
                     projectile_slot_used[i] = true;
-                    projectiles[i].set(camera_position.x * MAP_CELL_SIZE + x, camera_position.y * MAP_CELL_SIZE + y, 5, 5);
+                    int poz_x = p->get_position().x * MAP_CELL_SIZE + MAP_CELL_SIZE / 2;
+                    int poz_y = p->get_position().y * MAP_CELL_SIZE + MAP_CELL_SIZE / 2;
+                    double dx = x + camera_position.x * MAP_CELL_SIZE - poz_x;
+                    double dy = y + camera_position.y * MAP_CELL_SIZE - poz_y;
+                    double dis = sqrt(dx * dx + dy * dy);
+                    dx *= PROJECTILE_SPEED / dis;
+                    dy *= PROJECTILE_SPEED / dis;
+                    projectiles[i].set(poz_x, poz_y, dx, dy);
                     used_projectiles++;
                     i = MAX_PROJECTILES;
                 }
