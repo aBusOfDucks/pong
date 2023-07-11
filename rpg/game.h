@@ -35,6 +35,7 @@ private:
     player * p;
     int player_direction;
 
+    std::mutex mutex_projectiles;
     projectile projectiles[MAX_PROJECTILES];
     bool projectile_slot_used[MAX_PROJECTILES];
     int used_projectiles = 0;
@@ -50,6 +51,7 @@ private:
     {
         std::cout << "Player at: " << p->get_position().x << " " << p->get_position().y << "\n";
         move();
+        std::unique_lock<std::mutex> lock(mutex_projectiles);
         for(int i = 0; i < MAX_PROJECTILES; i++)
         {
             if (projectile_slot_used[i])
@@ -79,11 +81,14 @@ public:
                 al_draw_filled_rectangle(draw_x, draw_y, draw_x + MAP_CELL_SIZE, draw_y +  MAP_CELL_SIZE, PLAYER_COLOR);
             }
         }
-        for(int i = 0; i < MAX_PROJECTILES; i++)
         {
-            if (projectile_slot_used[i])
+            std::unique_lock<std::mutex> lock(mutex_projectiles);
+            for (int i = 0; i < MAX_PROJECTILES; i++)
             {
-                projectiles[i].draw(camera_position);
+                if (projectile_slot_used[i])
+                {
+                    projectiles[i].draw(camera_position);
+                }
             }
         }
         al_flip_display();
@@ -92,6 +97,7 @@ public:
     void set(player * pl)
     {
         p = pl;
+        std::unique_lock<std::mutex> lock(mutex_projectiles);
         used_projectiles = 0;
         for(int i = 0; i < MAX_PROJECTILES; i++)
             projectile_slot_used[i] = false;
@@ -160,6 +166,7 @@ public:
 
     void click(int x, int y, int type)
     {
+        std::unique_lock<std::mutex> lock(mutex_projectiles);
         if(used_projectiles < MAX_PROJECTILES)
         {
             for(int i = 0; i < MAX_PROJECTILES; i++)

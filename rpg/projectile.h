@@ -2,6 +2,7 @@
 #define __PROJECTILE_H__
 
 #include "const.h"
+#include <iostream>
 #include "coordinate.h"
 #include <mutex>
 #include <allegro5/allegro5.h>
@@ -17,6 +18,7 @@ public:
     double speed = 1;
     int size = 1;
     ALLEGRO_COLOR color;
+    int range = 10;
 
     projectile()
     {
@@ -35,10 +37,13 @@ public:
         std::unique_lock<std::mutex> lock(mutex_position);
         x += dx;
         y += dy;
+        range--;
     }
 
     bool check()
     {
+        if (range <= 0)
+            return false;
         if(x < 0 || y < 0)
             return false;
         if(x >= MAP_WIDTH * MAP_CELL_SIZE || y >= MAP_HEIGHT * MAP_CELL_SIZE)
@@ -78,6 +83,7 @@ public:
         this->size = other.size;
         this->speed = other.speed;
         this->color = other.color;
+        this->range = other.range;
         return *this;
     }
 };
