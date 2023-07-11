@@ -28,7 +28,10 @@ void player_input_manager(game & g)
         switch(event.type)
         {
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-                g.click(event.mouse.x, event.mouse.y);
+                if(event.mouse.button == 1)
+                    g.click(event.mouse.x, event.mouse.y, MAGIC_ATACK);
+                else
+                    g.click(event.mouse.x, event.mouse.y, FIRE_ATACK);
                 break;
 
             case ALLEGRO_EVENT_DISPLAY_CLOSE:

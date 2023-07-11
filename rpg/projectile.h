@@ -6,6 +6,7 @@
 #include <mutex>
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
+#include <cmath>
 
 class projectile{
 public:
@@ -13,6 +14,9 @@ public:
     std::mutex mutex_position;
     double x, y;
     double dx, dy;
+    double speed = 1;
+    int size = 1;
+    ALLEGRO_COLOR color;
 
     projectile()
     {
@@ -51,7 +55,7 @@ public:
             return;
         int draw_x = x - camera.x;
         int draw_y = y - camera.y;
-        al_draw_filled_rectangle(draw_x, draw_y, draw_x + PROJECTILE_SIZE, draw_y +  PROJECTILE_SIZE, PROJECTILE_COLOR);
+        al_draw_filled_rectangle(draw_x, draw_y, draw_x + size, draw_y +  size, color);
     }
 
     const void set(int new_x, int new_y, double new_dx, double new_dy)
@@ -60,6 +64,21 @@ public:
         y = new_y;
         dx = new_dx;
         dy = new_dy;
+        double dis = sqrt(dx * dx + dy * dy);
+        dx *= speed / dis;
+        dy *= speed / dis;
+    }
+
+    projectile& operator=(projectile & other)
+    {
+        this->x = other.x;
+        this->y = other.y;
+        this->dx = other.dx;
+        this->dy = other.dy;
+        this->size = other.size;
+        this->speed = other.speed;
+        this->color = other.color;
+        return *this;
     }
 };
 

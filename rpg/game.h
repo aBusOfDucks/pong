@@ -13,6 +13,8 @@
 #include "coordinate.h"
 #include "player.h"
 #include "projectile.h"
+#include "magic_projectile.h"
+#include "fire_projectile.h"
 #include <set>
 
 #define CAMERA_WIDTH (WINDOW_WIDTH / MAP_CELL_SIZE)
@@ -156,7 +158,7 @@ public:
         }
     }
 
-    void click(int x, int y)
+    void click(int x, int y, int type)
     {
         if(used_projectiles < MAX_PROJECTILES)
         {
@@ -168,10 +170,18 @@ public:
                     int poz_y = p->get_position().y * MAP_CELL_SIZE + MAP_CELL_SIZE / 2;
                     double dx = x + camera_position.x * MAP_CELL_SIZE - poz_x;
                     double dy = y + camera_position.y * MAP_CELL_SIZE - poz_y;
-                    double dis = sqrt(dx * dx + dy * dy);
-                    dx *= PROJECTILE_SPEED / dis;
-                    dy *= PROJECTILE_SPEED / dis;
-                    projectiles[i].set(poz_x, poz_y, dx, dy);
+                    if(type == MAGIC_ATACK)
+                    {
+                        magic_projectile mp;
+                        mp.set(poz_x, poz_y, dx, dy);
+                        projectiles[i] = mp;
+                    }
+                    if(type == FIRE_ATACK)
+                    {
+                        fire_projectile fp;
+                        fp.set(poz_x, poz_y, dx, dy);
+                        projectiles[i] = fp;
+                    }
                     used_projectiles++;
                     i = MAX_PROJECTILES;
                 }
