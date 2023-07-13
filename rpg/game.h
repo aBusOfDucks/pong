@@ -15,6 +15,8 @@
 #include "projectile.h"
 #include "magic_projectile.h"
 #include "fire_projectile.h"
+#include "entity.h"
+#include "tree.h"
 #include <set>
 
 #define CAMERA_WIDTH (WINDOW_WIDTH / MAP_CELL_SIZE)
@@ -40,6 +42,10 @@ private:
     bool projectile_slot_used[MAX_PROJECTILES];
     int used_projectiles = 0;
 
+    entity * entities[MAX_ENTITIES];
+    bool entity_slot_used[MAX_ENTITIES];
+    int used_entities = 0;
+
     void move()
     {
         p->move();
@@ -49,18 +55,19 @@ private:
 
     void tick()
     {
-        std::cout << "Player at: " << p->get_position().x << " " << p->get_position().y << "\n";
         move();
-        std::unique_lock<std::mutex> lock(mutex_projectiles);
-        for(int i = 0; i < MAX_PROJECTILES; i++)
         {
-            if (projectile_slot_used[i])
+            std::unique_lock <std::mutex> lock(mutex_projectiles);
+            for (int i = 0; i < MAX_PROJECTILES; i++)
             {
-                projectiles[i].move();
-                if (!projectiles[i].check())
+                if (projectile_slot_used[i])
                 {
-                    projectile_slot_used[i] = false;
-                    used_projectiles--;
+                    projectiles[i].move();
+                    if (!projectiles[i].check())
+                    {
+                        projectile_slot_used[i] = false;
+                        used_projectiles--;
+                    }
                 }
             }
         }
@@ -91,6 +98,13 @@ public:
                 }
             }
         }
+        for(int i = 0; i < MAX_ENTITIES; i++)
+        {
+            if(entity_slot_used[i])
+            {
+                entities[i]->draw(camera_position);
+            }
+        }
         al_flip_display();
     }
 
@@ -101,6 +115,22 @@ public:
         used_projectiles = 0;
         for(int i = 0; i < MAX_PROJECTILES; i++)
             projectile_slot_used[i] = false;
+
+        std::random_device dev;
+        std::mt19937 rng;
+        rng = std::mt19937(dev());
+        std::uniform_int_distribution<std::mt19937::result_type> tree_x_generator;
+        std::uniform_int_distribution<std::mt19937::result_type> tree_y_generator;
+
+        tree_x_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_WIDTH * MAP_CELL_SIZE);
+        tree_y_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_HEIGHT * MAP_CELL_SIZE);
+        for(int i = 0; i < MAX_ENTITIES; i++)
+        {
+
+            entities[i] = new tree(tree_x_generator(rng), tree_y_generator(rng));
+            used_entities++;
+            entity_slot_used[i] = true;
+        }
     }
 
     void set_display(ALLEGRO_DISPLAY * d)

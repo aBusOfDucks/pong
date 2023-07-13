@@ -5,7 +5,7 @@
 
 class coordinate{
 public:
-    int x, y;
+    double x, y;
 
     coordinate()
     {
@@ -13,7 +13,7 @@ public:
         y = 0;
     }
 
-    coordinate(int poz_x, int poz_y)
+    coordinate(double poz_x, double poz_y)
     {
         x = poz_x;
         y = poz_y;
@@ -35,13 +35,13 @@ public:
         return ans;
     }
 
-    void set(int new_x, int new_y)
+    void set(double new_x, double new_y)
     {
         x = new_x;
         y = new_y;
     }
 
-    void change(int dx, int dy)
+    void change(double dx, double dy)
     {
         x += dx;
         y += dy;
@@ -64,7 +64,7 @@ public:
         trim(MAP_WIDTH, MAP_HEIGHT);
     }
 
-    void scale(int m)
+    void scale(double m)
     {
         x *= m;
         y *= m;
