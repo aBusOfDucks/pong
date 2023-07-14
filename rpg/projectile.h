@@ -28,8 +28,8 @@ public:
 
     projectile(coordinate camera, int mouse_x, int mouse_y)
     {
-        x = camera.x * MAP_CELL_SIZE + mouse_x;
-        y = camera.y * MAP_CELL_SIZE + mouse_y;
+        x = camera.x + mouse_x;
+        y = camera.y + mouse_y;
     }
 
     void move()
@@ -46,14 +46,13 @@ public:
             return false;
         if(x < 0 || y < 0)
             return false;
-        if(x >= MAP_WIDTH * MAP_CELL_SIZE || y >= MAP_HEIGHT * MAP_CELL_SIZE)
+        if(x >= MAP_WIDTH || y >= MAP_HEIGHT)
             return false;
         return true;
     }
 
     void draw(coordinate camera)
     {
-        camera.scale(MAP_CELL_SIZE);
         if(x < camera.x || y < camera.y)
             return;
         if(x >= camera.x + WINDOW_WIDTH || y >= camera.y + WINDOW_HEIGHT)

@@ -22,8 +22,8 @@ public:
 
     magic_projectile(coordinate camera, int mouse_x, int mouse_y)
     {
-        x = camera.x * MAP_CELL_SIZE + mouse_x;
-        y = camera.y * MAP_CELL_SIZE + mouse_y;
+        x = camera.x + mouse_x;
+        y = camera.y + mouse_y;
         color = MAGIC_PROJECTILE_COLOR;
         size = MAGIC_PROJECTILE_SIZE;
         speed = MAGIC_PROJECTILE_SPEED;

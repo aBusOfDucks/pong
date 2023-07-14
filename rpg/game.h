@@ -19,9 +19,6 @@
 #include "tree.h"
 #include <set>
 
-#define CAMERA_WIDTH (WINDOW_WIDTH / MAP_CELL_SIZE)
-#define CAMERA_HEIGHT (WINDOW_HEIGHT / MAP_CELL_SIZE)
-
 class game{
 private:
     ALLEGRO_DISPLAY * display;
@@ -48,9 +45,9 @@ private:
 
     void move()
     {
-        p->move();
-        camera_position = p->get_position() - coordinate(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2);
-        camera_position.trim(MAP_WIDTH - CAMERA_WIDTH + 1, MAP_HEIGHT - CAMERA_HEIGHT + 1);
+        p->move(entities);
+        camera_position = p->get_position() - coordinate(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+        camera_position.trim(MAP_WIDTH - WINDOW_WIDTH, MAP_HEIGHT - WINDOW_HEIGHT);
     }
 
     void tick()
@@ -77,8 +74,10 @@ public:
     void draw()
     {
         al_clear_to_color(MAP_COLOR);
+        /*
         coordinate player_position = p->get_position();
         coordinate relative_position = player_position - camera_position;
+
         if(relative_position.x >= 0 && relative_position.y >= 0)
         {
             if(relative_position.x < MAP_WIDTH && relative_position.y <= MAP_HEIGHT)
@@ -87,7 +86,8 @@ public:
                 int draw_y = relative_position.y * MAP_CELL_SIZE;
                 al_draw_filled_rectangle(draw_x, draw_y, draw_x + MAP_CELL_SIZE, draw_y +  MAP_CELL_SIZE, PLAYER_COLOR);
             }
-        }
+        }*/
+        p->draw(camera_position);
         {
             std::unique_lock<std::mutex> lock(mutex_projectiles);
             for (int i = 0; i < MAX_PROJECTILES; i++)
@@ -122,8 +122,8 @@ public:
         std::uniform_int_distribution<std::mt19937::result_type> tree_x_generator;
         std::uniform_int_distribution<std::mt19937::result_type> tree_y_generator;
 
-        tree_x_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_WIDTH * MAP_CELL_SIZE);
-        tree_y_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_HEIGHT * MAP_CELL_SIZE);
+        tree_x_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_WIDTH);
+        tree_y_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_HEIGHT);
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
 
@@ -203,10 +203,10 @@ public:
                 if(!projectile_slot_used[i])
                 {
                     projectile_slot_used[i] = true;
-                    int poz_x = p->get_position().x * MAP_CELL_SIZE + MAP_CELL_SIZE / 2;
-                    int poz_y = p->get_position().y * MAP_CELL_SIZE + MAP_CELL_SIZE / 2;
-                    double dx = x + camera_position.x * MAP_CELL_SIZE - poz_x;
-                    double dy = y + camera_position.y * MAP_CELL_SIZE - poz_y;
+                    int poz_x = p->get_position().x;
+                    int poz_y = p->get_position().y;
+                    double dx = x + camera_position.x - poz_x;
+                    double dy = y + camera_position.y - poz_y;
                     if(type == MAGIC_ATACK)
                     {
                         magic_projectile mp;

@@ -53,10 +53,10 @@ public:
             x = 0;
         if (y < 0)
             y = 0;
-        if (x >= max_x)
-            x = max_x - 1;
-        if (y >= max_y)
-            y = max_y - 1;
+        if (x > max_x)
+            x = max_x;
+        if (y > max_y)
+            y = max_y;
     }
 
     void trim()
@@ -68,6 +68,14 @@ public:
     {
         x *= m;
         y *= m;
+    }
+
+    bool in_square(coordinate left_upper, coordinate right_bottom)
+    {
+        if(x >= left_upper.x && x <= right_bottom.x)
+            if(y >= left_upper.y && y <= right_bottom.y)
+                return true;
+        return false;
     }
 };
 
