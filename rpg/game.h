@@ -59,7 +59,7 @@ private:
             {
                 if (projectile_slot_used[i])
                 {
-                    projectiles[i].move();
+                    projectiles[i].move(entities);
                     if (!projectiles[i].check())
                     {
                         projectile_slot_used[i] = false;

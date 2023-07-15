@@ -13,6 +13,7 @@ protected:
     bool is_destroyed_by_fire;
     bool can_player_pass;
     coordinate hitbox_end;
+    bool exist = true;
 
 public:
     entity()
@@ -27,6 +28,8 @@ public:
     virtual void draw(coordinate camera) = 0;
     bool collide(coordinate left_upper, coordinate right_bottom)
     {
+        if(!exist)
+            return false;
         coordinate left_bottom(left_upper.x, right_bottom.y);
         coordinate right_upper(right_bottom.x, left_upper.y);
 
@@ -51,6 +54,17 @@ public:
             return true;
 
         return false;
+    }
+    void kill()
+    {
+        exist = false;
+    }
+    void hit_by(int type)
+    {
+        if(type == FIRE_TYPE && is_destroyed_by_fire)
+            kill();
+        if(type == MAGIC_TYPE && is_destroyed_by_magic)
+            kill();
     }
 };
 

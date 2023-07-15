@@ -18,6 +18,7 @@ public:
         size = FIRE_PROJECTILE_SIZE;
         speed = FIRE_PROJECTILE_SPEED;
         range = FIRE_PROJECTILE_RANGE;
+        type = FIRE_TYPE;
     }
 
     fire_projectile(coordinate camera, int mouse_x, int mouse_y)
@@ -28,6 +29,7 @@ public:
         size = FIRE_PROJECTILE_SIZE;
         speed = FIRE_PROJECTILE_SPEED;
         range = FIRE_PROJECTILE_RANGE;
+        type = FIRE_TYPE;
     }
 
 };

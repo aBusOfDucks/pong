@@ -18,6 +18,7 @@ public:
         size = MAGIC_PROJECTILE_SIZE;
         speed = MAGIC_PROJECTILE_SPEED;
         range = MAGIC_PROJECTILE_RANGE;
+        type = MAGIC_TYPE;
     }
 
     magic_projectile(coordinate camera, int mouse_x, int mouse_y)
@@ -28,6 +29,7 @@ public:
         size = MAGIC_PROJECTILE_SIZE;
         speed = MAGIC_PROJECTILE_SPEED;
         range = MAGIC_PROJECTILE_RANGE;
+        type = MAGIC_TYPE;
     }
 
 };

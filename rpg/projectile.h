@@ -8,6 +8,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 #include <cmath>
+#include "entity.h"
 
 class projectile{
 public:
@@ -19,6 +20,7 @@ public:
     int size = 1;
     ALLEGRO_COLOR color;
     int range = 10;
+    int type = 3;
 
     projectile()
     {
@@ -32,12 +34,22 @@ public:
         y = camera.y + mouse_y;
     }
 
-    void move()
+    void move(entity ** entities)
     {
         std::unique_lock<std::mutex> lock(mutex_position);
         x += dx;
         y += dy;
         range--;
+        coordinate hitbox_start(x, y);
+        coordinate hitbox_end(x + size, y + size);
+        for(int i = 0; i < MAX_ENTITIES; i++)
+        {
+            if(entities[i]->collide(hitbox_start, hitbox_end))
+            {
+                entities[i]->hit_by(type);
+                destroy();
+            }
+        }
     }
 
     bool check()
@@ -83,7 +95,13 @@ public:
         this->speed = other.speed;
         this->color = other.color;
         this->range = other.range;
+        this->type = other.type;
         return *this;
+    }
+
+    void destroy()
+    {
+        range = 0;
     }
 };
 
