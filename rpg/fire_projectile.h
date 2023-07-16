@@ -23,8 +23,8 @@ public:
 
     fire_projectile(coordinate camera, int mouse_x, int mouse_y)
     {
-        x = camera.x + mouse_x;
-        y = camera.y + mouse_y;
+        x = camera.x + mouse_x - FIRE_PROJECTILE_SIZE / 2;
+        y = camera.y + mouse_y - FIRE_PROJECTILE_SIZE / 2;
         color = FIRE_PROJECTILE_COLOR;
         size = FIRE_PROJECTILE_SIZE;
         speed = FIRE_PROJECTILE_SPEED;

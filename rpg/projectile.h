@@ -40,8 +40,8 @@ public:
         x += dx;
         y += dy;
         range--;
-        coordinate hitbox_start(x, y);
-        coordinate hitbox_end(x + size, y + size);
+        coordinate hitbox_start(x - size / 2, y - size / 2);
+        coordinate hitbox_end(x + size / 2, y + size / 2);
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
             if(entities[i]->collide(hitbox_start, hitbox_end))
@@ -71,13 +71,13 @@ public:
             return;
         int draw_x = x - camera.x;
         int draw_y = y - camera.y;
-        al_draw_filled_rectangle(draw_x, draw_y, draw_x + size, draw_y +  size, color);
+        al_draw_filled_circle(draw_x, draw_y, size / 2, color);
     }
 
     const void set(int new_x, int new_y, double new_dx, double new_dy)
     {
-        x = new_x;
-        y = new_y;
+        x = new_x - size / 2;
+        y = new_y - size / 2;
         dx = new_dx;
         dy = new_dy;
         double dis = sqrt(dx * dx + dy * dy);

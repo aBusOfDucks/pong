@@ -17,6 +17,7 @@
 #include "fire_projectile.h"
 #include "entity.h"
 #include "tree.h"
+#include "bush.h"
 #include <set>
 
 class game{
@@ -119,17 +120,28 @@ public:
         std::random_device dev;
         std::mt19937 rng;
         rng = std::mt19937(dev());
-        std::uniform_int_distribution<std::mt19937::result_type> tree_x_generator;
-        std::uniform_int_distribution<std::mt19937::result_type> tree_y_generator;
+        std::uniform_int_distribution<std::mt19937::result_type> entity_x_generator;
+        std::uniform_int_distribution<std::mt19937::result_type> entity_y_generator;
+        std::uniform_int_distribution<std::mt19937::result_type> entity_type_generator;
 
-        tree_x_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_WIDTH);
-        tree_y_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_HEIGHT);
+        entity_x_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_WIDTH);
+        entity_y_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_HEIGHT);
+        entity_type_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, ENTITIES_NUMBER_OF_TYPES - 1);
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
-
-            entities[i] = new tree(tree_x_generator(rng), tree_y_generator(rng));
-            used_entities++;
-            entity_slot_used[i] = true;
+            int type = entity_type_generator(rng);
+            if(type == BUSH_TYPE)
+            {
+                entities[i] = new bush(entity_x_generator(rng), entity_y_generator(rng));
+                used_entities++;
+                entity_slot_used[i] = true;
+            }
+            if(type == TREE_TYPE)
+            {
+                entities[i] = new tree(entity_x_generator(rng), entity_y_generator(rng));
+                used_entities++;
+                entity_slot_used[i] = true;
+            }
         }
     }
 
@@ -203,8 +215,8 @@ public:
                 if(!projectile_slot_used[i])
                 {
                     projectile_slot_used[i] = true;
-                    int poz_x = p->get_position().x;
-                    int poz_y = p->get_position().y;
+                    int poz_x = p->get_position().x + PLAYER_SIZE / 2;
+                    int poz_y = p->get_position().y + PLAYER_SIZE / 2;
                     double dx = x + camera_position.x - poz_x;
                     double dy = y + camera_position.y - poz_y;
                     if(type == MAGIC_ATACK)

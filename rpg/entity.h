@@ -13,7 +13,9 @@ protected:
     bool is_destroyed_by_fire;
     bool can_player_pass;
     coordinate hitbox_end;
+    coordinate hitbox_start;
     bool exist = true;
+
 
 public:
     entity()
@@ -33,17 +35,17 @@ public:
         coordinate left_bottom(left_upper.x, right_bottom.y);
         coordinate right_upper(right_bottom.x, left_upper.y);
 
-        if(left_upper.in_square(position, hitbox_end))
+        if(left_upper.in_square(hitbox_start, hitbox_end))
             return true;
-        if(right_bottom.in_square(position, hitbox_end))
+        if(right_bottom.in_square(hitbox_start, hitbox_end))
             return true;
-        if(right_upper.in_square(position, hitbox_end))
+        if(right_upper.in_square(hitbox_start, hitbox_end))
             return true;
-        if(left_bottom.in_square(position, hitbox_end))
+        if(left_bottom.in_square(hitbox_start, hitbox_end))
             return true;
 
-        coordinate hitbox_left_bottom(position.x, hitbox_end.y);
-        coordinate hitbox_right_upper(hitbox_end.x, position.y);
+        coordinate hitbox_left_bottom(hitbox_start.x, hitbox_end.y);
+        coordinate hitbox_right_upper(hitbox_end.x, hitbox_start.y);
         if(position.in_square(left_upper, right_bottom))
             return true;
         if(hitbox_end.in_square(left_upper, right_bottom))

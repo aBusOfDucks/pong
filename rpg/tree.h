@@ -13,6 +13,7 @@ public:
     tree(double x, double y)
     {
         position.set(x, y);
+        hitbox_start.set(x, y);
         hitbox_end.set(x + std::max(TREE_TRUNK_WIDTH, TREE_LEAVES_WIDTH), y + TREE_LEAVES_HEIGHT + TREE_TRUNK_HEIGHT);
         is_destroyed_by_magic = false;
         is_destroyed_by_fire = true;

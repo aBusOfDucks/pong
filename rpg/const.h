@@ -1,15 +1,28 @@
 #ifndef __CONST_H__
 #define __CONST_H__
 
+/* GENERAL */
+
 #define FPS 100
 #define TPS 200
+
+/* WINDOW */
 
 #define WINDOW_WIDTH 900
 #define WINDOW_HEIGHT 900
 
+/* MAP */
+
 #define MAP_WIDTH 1500
 #define MAP_HEIGHT 1500
 #define MAP_COLOR al_map_rgb(0, 100, 0)
+
+/* PROJECTILES */
+
+#define MAX_PROJECTILES 100
+
+#define MAGIC_ATACK 0
+#define FIRE_ATACK 1
 
 #define MAGIC_PROJECTILE_SIZE 3
 #define MAGIC_PROJECTILE_SPEED 1
@@ -25,6 +38,15 @@
 #define FIRE_PROJECTILE_RANGE (TPS * FIRE_PROJECTILE_LIFETIME)
 #define FIRE_TYPE 1
 
+/* ENTITIES */
+
+#define MAX_ENTITIES 250
+
+#define TREE_TYPE 0
+#define BUSH_TYPE 1
+
+#define ENTITIES_NUMBER_OF_TYPES 2
+
 #define TREE_TRUNK_HEIGHT 10
 #define TREE_TRUNK_WIDTH 6
 #define TREE_LEAVES_HEIGHT 20
@@ -32,12 +54,10 @@
 #define TREE_TRUNK_COLOR al_map_rgb(255, 200, 0)
 #define TREE_LEAVES_COLOR al_map_rgb(0, 255, 0)
 
+#define BUSH_SIZE 25
+#define BUSH_COLOR al_map_rgb(0, 200, 0)
 
-#define MAGIC_ATACK 0
-#define FIRE_ATACK 1
-
-#define MAX_PROJECTILES 100
-#define MAX_ENTITIES 250
+/* PLAYER */
 
 #define PLAYER_SIZE 20
 #define PLAYER_COLOR al_map_rgb(255, 0, 0)

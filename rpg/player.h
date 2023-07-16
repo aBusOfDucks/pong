@@ -74,7 +74,8 @@ public:
             return;
         int draw_x = position.x - camera.x;
         int draw_y = position.y - camera.y;
-        al_draw_filled_rectangle(draw_x, draw_y, draw_x + PLAYER_SIZE, draw_y +  PLAYER_SIZE, PLAYER_COLOR);
+        al_draw_filled_circle(draw_x + PLAYER_SIZE / 2, draw_y + PLAYER_SIZE / 2, PLAYER_SIZE / 2, PLAYER_COLOR);
+//        al_draw_filled_rectangle(draw_x, draw_y, draw_x + PLAYER_SIZE, draw_y +  PLAYER_SIZE, PLAYER_COLOR);
     }
 
 };
