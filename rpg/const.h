@@ -44,8 +44,9 @@
 
 #define TREE_TYPE 0
 #define BUSH_TYPE 1
+#define PIG_TYPE 2
 
-#define ENTITIES_NUMBER_OF_TYPES 2
+#define ENTITIES_NUMBER_OF_TYPES 3
 
 #define TREE_TRUNK_HEIGHT 10
 #define TREE_TRUNK_WIDTH 6
@@ -56,6 +57,12 @@
 
 #define BUSH_SIZE 25
 #define BUSH_COLOR al_map_rgb(0, 200, 0)
+
+#define PIG_SIZE 20
+#define PIG_MAGIC_DAMAGE 25
+#define PIG_FIRE_DAMAGE 100
+#define PIG_HEALTH 60
+#define PIG_COLOR al_map_rgb(255, 0, 150)
 
 /* PLAYER */
 

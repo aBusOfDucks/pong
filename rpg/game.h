@@ -19,6 +19,7 @@
 #include "tree.h"
 #include "bush.h"
 #include "enemy.h"
+#include "pig.h"
 #include <set>
 
 class game{
@@ -76,19 +77,6 @@ public:
     void draw()
     {
         al_clear_to_color(MAP_COLOR);
-        /*
-        coordinate player_position = p->get_position();
-        coordinate relative_position = player_position - camera_position;
-
-        if(relative_position.x >= 0 && relative_position.y >= 0)
-        {
-            if(relative_position.x < MAP_WIDTH && relative_position.y <= MAP_HEIGHT)
-            {
-                int draw_x = relative_position.x * MAP_CELL_SIZE;
-                int draw_y = relative_position.y * MAP_CELL_SIZE;
-                al_draw_filled_rectangle(draw_x, draw_y, draw_x + MAP_CELL_SIZE, draw_y +  MAP_CELL_SIZE, PLAYER_COLOR);
-            }
-        }*/
         p->draw(camera_position);
         {
             std::unique_lock<std::mutex> lock(mutex_projectiles);
@@ -140,6 +128,12 @@ public:
             if(type == TREE_TYPE)
             {
                 entities[i] = new tree(entity_x_generator(rng), entity_y_generator(rng));
+                used_entities++;
+                entity_slot_used[i] = true;
+            }
+            if(type == PIG_TYPE)
+            {
+                entities[i] = new pig(entity_x_generator(rng), entity_y_generator(rng));
                 used_entities++;
                 entity_slot_used[i] = true;
             }
