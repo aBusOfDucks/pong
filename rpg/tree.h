@@ -3,11 +3,12 @@
 
 #include "entity.h"
 #include "coordinate.h"
+#include "obstacle.h"
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
 
-class tree : public entity{
+class tree : public obstacle{
 public:
 
     tree(double x, double y)

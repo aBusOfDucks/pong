@@ -23,8 +23,8 @@ public:
 
     magic_projectile(coordinate camera, int mouse_x, int mouse_y)
     {
-        x = camera.x + mouse_x - MAGIC_PROJECTILE_SIZE / 2;
-        y = camera.y + mouse_y - MAGIC_PROJECTILE_SIZE / 2;
+        position.x = camera.x + mouse_x - MAGIC_PROJECTILE_SIZE / 2;
+        position.y = camera.y + mouse_y - MAGIC_PROJECTILE_SIZE / 2;
         color = MAGIC_PROJECTILE_COLOR;
         size = MAGIC_PROJECTILE_SIZE;
         speed = MAGIC_PROJECTILE_SPEED;

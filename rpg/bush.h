@@ -3,12 +3,13 @@
 
 #include "entity.h"
 #include "coordinate.h"
+#include "obstacle.h"
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
 #include <math.h>
 
-class bush : public entity{
+class bush : public obstacle{
 public:
 
     bush(double x, double y)

@@ -18,6 +18,7 @@
 #include "entity.h"
 #include "tree.h"
 #include "bush.h"
+#include "enemy.h"
 #include <set>
 
 class game{
