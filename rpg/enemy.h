@@ -15,6 +15,24 @@ protected:
     int size;
     ALLEGRO_COLOR color;
     int direction = NONE;
+    bool check_position(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
+    {
+        int number_of_collisions = 0;
+        if(position.x < size / 2 || position.y < size / 2)
+            return false;
+        if(position.x + size / 2 > MAP_WIDTH || position.y + size / 2 > MAP_HEIGHT)
+            return false;
+        for(int i = 0; i < MAX_ENTITIES; i++)
+        {
+            if(entities[i]->collide(hitbox_start, hitbox_end))
+                number_of_collisions++;
+        }
+        if(number_of_collisions > 1)
+            return false;
+        if(collide(player_hitbox_start, player_hitbox_end))
+            return false;
+        return true;
+    }
 
 public:
     void hit_by(int type)
@@ -43,7 +61,7 @@ public:
         al_draw_filled_circle(draw_x, draw_y, size / 2, color);
     }
     virtual void update_hitbox() = 0;
-    void move()
+    void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
     {
         if(!exist)
             return;
@@ -56,6 +74,19 @@ public:
         if(direction == RIGHT)
             position.x++;
         update_hitbox();
+        if(!check_position(entities, player_hitbox_start, player_hitbox_end))
+        {
+            if(direction == UP)
+                position.y++;
+            if(direction == DOWN)
+                position.y--;
+            if(direction == LEFT)
+                position.x++;
+            if(direction == RIGHT)
+                position.x--;
+            update_hitbox();
+        }
+
         std::random_device dev;
         std::mt19937 rng;
         rng = std::mt19937(dev());

@@ -27,22 +27,24 @@ public:
     {
         direction_x = 0;
         direction_y = 0;
-        position.set(0, 0);
+        position.set(PLAYER_SIZE / 2, PLAYER_SIZE / 2);
     }
     void move(entity ** entities)
     {
         std::unique_lock<std::mutex> lock(mutex_position);
         position.change(direction_x, direction_y);
-        coordinate hitbox_end(position.x + PLAYER_SIZE, position.y + PLAYER_SIZE);
+        coordinate hitbox_start(position.x - PLAYER_SIZE / 2, position.y - PLAYER_SIZE / 2);
+        coordinate hitbox_end(position.x + PLAYER_SIZE / 2, position.y + PLAYER_SIZE / 2);
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
-            if(entities[i]->collide(position, hitbox_end))
+            if(entities[i]->collide(hitbox_start, hitbox_end))
             {
                 position.change(-direction_x, -direction_y);
                 i = MAX_ENTITIES;
             }
         }
-        position.trim(MAP_WIDTH - PLAYER_SIZE, MAP_HEIGHT - PLAYER_SIZE);
+        position.trim(MAP_WIDTH - PLAYER_SIZE / 2, MAP_HEIGHT - PLAYER_SIZE / 2);
+        position.trim_bottom(PLAYER_SIZE / 2, PLAYER_SIZE / 2);
     }
 
     void change_direction(int dx, int dy)
@@ -60,6 +62,18 @@ public:
             direction_y = -1;
     }
 
+    coordinate get_hitbox_start()
+    {
+        coordinate hitbox_start(position.x - PLAYER_SIZE / 2, position.y - PLAYER_SIZE / 2);
+        return hitbox_start;
+    }
+
+    coordinate get_hitbox_end()
+    {
+        coordinate hitbox_end(position.x + PLAYER_SIZE / 2, position.y + PLAYER_SIZE / 2);
+        return hitbox_end;
+    }
+
     coordinate get_position()
     {
         std::unique_lock<std::mutex> lock(mutex_position);
@@ -74,7 +88,7 @@ public:
             return;
         int draw_x = position.x - camera.x;
         int draw_y = position.y - camera.y;
-        al_draw_filled_circle(draw_x + PLAYER_SIZE / 2, draw_y + PLAYER_SIZE / 2, PLAYER_SIZE / 2, PLAYER_COLOR);
+        al_draw_filled_circle(draw_x, draw_y, PLAYER_SIZE / 2, PLAYER_COLOR);
     }
 
 };

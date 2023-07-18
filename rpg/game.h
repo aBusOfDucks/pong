@@ -51,6 +51,7 @@ private:
         p->move(entities);
         camera_position = p->get_position() - coordinate(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
         camera_position.trim(MAP_WIDTH - WINDOW_WIDTH, MAP_HEIGHT - WINDOW_HEIGHT);
+        camera_position.trim_bottom(0, 0);
     }
 
     void tick()
@@ -73,7 +74,7 @@ private:
         }
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
-            entities[i]->move();
+            entities[i]->move(entities, p->get_hitbox_start(), p->get_hitbox_end());
         }
     }
 
@@ -140,6 +141,15 @@ public:
                 entities[i] = new pig(entity_x_generator(rng), entity_y_generator(rng));
                 used_entities++;
                 entity_slot_used[i] = true;
+            }
+            for(int j = 0; j < i; j++)
+            {
+                if(entities[i]->entity_collide(entities[j]))
+                {
+                    used_entities--;
+                    j = i;
+                    i--;
+                }
             }
         }
     }

@@ -26,6 +26,12 @@ public:
         position.set(x, y);
     }
     virtual void draw(coordinate camera) = 0;
+
+    bool entity_collide(entity * e)
+    {
+        return e->collide(hitbox_start, hitbox_end);
+    }
+
     bool collide(coordinate left_upper, coordinate right_bottom)
     {
         if(!exist || can_player_pass)
@@ -60,7 +66,7 @@ public:
         exist = false;
     }
     virtual void hit_by(int type) = 0;
-    virtual void move() = 0;
+    virtual void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end) = 0;
 };
 
 #endif //__ENTITY_H__

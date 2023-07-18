@@ -49,10 +49,10 @@ public:
 
     void trim(int max_x, int max_y)
     {
-        if (x < 0)
+    /*    if (x < 0)
             x = 0;
         if (y < 0)
-            y = 0;
+            y = 0;*/
         if (x > max_x)
             x = max_x;
         if (y > max_y)
@@ -62,6 +62,14 @@ public:
     void trim()
     {
         trim(MAP_WIDTH, MAP_HEIGHT);
+    }
+
+    void trim_bottom(double min_x, double min_y)
+    {
+        if(x < min_x)
+            x = min_x;
+        if(y < min_y)
+            y = min_y;
     }
 
     void scale(double m)

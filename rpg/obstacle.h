@@ -16,9 +16,9 @@ public:
         if(type == MAGIC_TYPE && is_destroyed_by_magic)
             kill();
     }
-    void move()
+    void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
     {
-
+        return;
     }
 };
 
