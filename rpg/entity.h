@@ -60,6 +60,7 @@ public:
         exist = false;
     }
     virtual void hit_by(int type) = 0;
+    virtual void move() = 0;
 };
 
 #endif //__ENTITY_H__

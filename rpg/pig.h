@@ -18,6 +18,11 @@ public:
         color = PIG_COLOR;
         can_player_pass = false;
     }
+    void update_hitbox()
+    {
+        hitbox_start.set(position.x - size / 2, position.y - size / 2);
+        hitbox_end.set(position.x + size / 2, position.y + size / 2);
+    }
 };
 
 #endif //__PIG_H__

@@ -71,6 +71,10 @@ private:
                 }
             }
         }
+        for(int i = 0; i < MAX_ENTITIES; i++)
+        {
+            entities[i]->move();
+        }
     }
 
 public:

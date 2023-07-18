@@ -5,6 +5,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
+#include <random>
 
 class enemy : public entity {
 protected:
@@ -13,6 +14,7 @@ protected:
     int magic_damage;
     int size;
     ALLEGRO_COLOR color;
+    int direction = NONE;
 
 public:
     void hit_by(int type)
@@ -39,6 +41,38 @@ public:
         int draw_x = position.x - camera.x;
         int draw_y = position.y - camera.y;
         al_draw_filled_circle(draw_x, draw_y, size / 2, color);
+    }
+    virtual void update_hitbox() = 0;
+    void move()
+    {
+        if(!exist)
+            return;
+        if(direction == UP)
+            position.y--;
+        if(direction == DOWN)
+            position.y++;
+        if(direction == LEFT)
+            position.x--;
+        if(direction == RIGHT)
+            position.x++;
+        update_hitbox();
+        std::random_device dev;
+        std::mt19937 rng;
+        rng = std::mt19937(dev());
+        std::uniform_int_distribution<std::mt19937::result_type> change_direction_generator;
+
+        change_direction_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, CHANCE_TO_CHANGE_DIRECTION);
+        if(change_direction_generator(rng) == 0)
+        {
+            if(direction == NONE)
+            {
+                std::uniform_int_distribution <std::mt19937::result_type> new_direction;
+                new_direction = std::uniform_int_distribution<std::mt19937::result_type>(0, DIRECTIONS_NUMBER);
+                direction = new_direction(rng);
+            }
+            else
+                direction = NONE;
+        }
     }
 };
 

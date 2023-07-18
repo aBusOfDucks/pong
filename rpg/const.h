@@ -48,6 +48,8 @@
 
 #define ENTITIES_NUMBER_OF_TYPES 3
 
+    /* OBSTACLES */
+
 #define TREE_TRUNK_HEIGHT 10
 #define TREE_TRUNK_WIDTH 6
 #define TREE_LEAVES_HEIGHT 20
@@ -57,6 +59,10 @@
 
 #define BUSH_SIZE 25
 #define BUSH_COLOR al_map_rgb(0, 200, 0)
+
+    /* ENEMIES */
+
+#define CHANCE_TO_CHANGE_DIRECTION 200
 
 #define PIG_SIZE 20
 #define PIG_MAGIC_DAMAGE 25
@@ -74,5 +80,6 @@
 #define LEFT 2
 #define RIGHT 3
 #define NONE 4
+#define DIRECTIONS_NUMBER 5
 
 #endif /* __CONST_H__ */

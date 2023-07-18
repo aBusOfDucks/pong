@@ -16,6 +16,10 @@ public:
         if(type == MAGIC_TYPE && is_destroyed_by_magic)
             kill();
     }
+    void move()
+    {
+
+    }
 };
 
 #endif //__OBSTACLE_H__
