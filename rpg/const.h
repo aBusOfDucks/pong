@@ -45,8 +45,9 @@
 #define TREE_TYPE 0
 #define BUSH_TYPE 1
 #define PIG_TYPE 2
+#define ROCK_TYPE 3
 
-#define ENTITIES_NUMBER_OF_TYPES 3
+#define ENTITIES_NUMBER_OF_TYPES 4
 
     /* OBSTACLES */
 
@@ -59,6 +60,9 @@
 
 #define BUSH_SIZE 25
 #define BUSH_COLOR al_map_rgb(0, 200, 0)
+
+#define ROCK_SIZE 30
+#define ROCK_COLOR al_map_rgb(150, 150, 150)
 
     /* ENEMIES */
 

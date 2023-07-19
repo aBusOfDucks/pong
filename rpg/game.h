@@ -20,6 +20,7 @@
 #include "bush.h"
 #include "enemy.h"
 #include "pig.h"
+#include "rock.h"
 #include <set>
 
 class game{
@@ -127,21 +128,21 @@ public:
             if(type == BUSH_TYPE)
             {
                 entities[i] = new bush(entity_x_generator(rng), entity_y_generator(rng));
-                used_entities++;
-                entity_slot_used[i] = true;
             }
             if(type == TREE_TYPE)
             {
                 entities[i] = new tree(entity_x_generator(rng), entity_y_generator(rng));
-                used_entities++;
-                entity_slot_used[i] = true;
             }
             if(type == PIG_TYPE)
             {
                 entities[i] = new pig(entity_x_generator(rng), entity_y_generator(rng));
-                used_entities++;
-                entity_slot_used[i] = true;
             }
+            if(type == ROCK_TYPE)
+            {
+                entities[i] = new rock(entity_x_generator(rng), entity_y_generator(rng));
+            }
+            used_entities++;
+            entity_slot_used[i] = true;
             for(int j = 0; j < i; j++)
             {
                 if(entities[i]->entity_collide(entities[j]))
@@ -224,8 +225,8 @@ public:
                 if(!projectile_slot_used[i])
                 {
                     projectile_slot_used[i] = true;
-                    int poz_x = p->get_position().x + PLAYER_SIZE / 2;
-                    int poz_y = p->get_position().y + PLAYER_SIZE / 2;
+                    int poz_x = p->get_position().x;
+                    int poz_y = p->get_position().y;
                     double dx = x + camera_position.x - poz_x;
                     double dy = y + camera_position.y - poz_y;
                     if(type == MAGIC_ATACK)
