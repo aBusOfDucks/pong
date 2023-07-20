@@ -19,6 +19,7 @@
 #include "tree.h"
 #include "bush.h"
 #include "enemy.h"
+#include "orc.h"
 #include "pig.h"
 #include "rock.h"
 #include <set>
@@ -140,6 +141,10 @@ public:
             if(type == ROCK_TYPE)
             {
                 entities[i] = new rock(entity_x_generator(rng), entity_y_generator(rng));
+            }
+            if(type == ORC_TYPE)
+            {
+                entities[i] = new orc(entity_x_generator(rng), entity_y_generator(rng));
             }
             used_entities++;
             entity_slot_used[i] = true;

@@ -46,8 +46,9 @@
 #define BUSH_TYPE 1
 #define PIG_TYPE 2
 #define ROCK_TYPE 3
+#define ORC_TYPE 4
 
-#define ENTITIES_NUMBER_OF_TYPES 4
+#define ENTITIES_NUMBER_OF_TYPES 5
 
     /* OBSTACLES */
 
@@ -73,6 +74,12 @@
 #define PIG_FIRE_DAMAGE 100
 #define PIG_HEALTH 60
 #define PIG_COLOR al_map_rgb(255, 0, 150)
+
+#define ORC_SIZE 40
+#define ORC_MAGIC_DAMAGE 50
+#define ORC_FIRE_DAMAGE 35
+#define ORC_HEALTH 300
+#define ORC_COLOR al_map_rgb(0, 0, 0)
 
 /* PLAYER */
 
