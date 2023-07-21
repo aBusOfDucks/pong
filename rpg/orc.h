@@ -26,49 +26,26 @@ public:
     {
         if(!exist)
             return;
-        is
-        }
-        if(direction == DOWN)
+        if(direction == ORC_DIRECTION_UP_RIGHT)
         {
-            position.x--;
-            position.y++;
+            move_in_direction(UP, entities, player_hitbox_start, player_hitbox_end);
+            move_in_direction(RIGHT, entities, player_hitbox_start, player_hitbox_end);
         }
-        if(direction == LEFT)
+        if(direction == ORC_DIRECTION_DOWN_LEFT)
         {
-            position.x--;
-            position.y--;
+            move_in_direction(DOWN, entities, player_hitbox_start, player_hitbox_end);
+            move_in_direction(LEFT, entities, player_hitbox_start, player_hitbox_end);
         }
-        if(direction == RIGHT)
+        if(direction == ORC_DIRECTION_UP_LEFT)
         {
-            position.x++;
-            position.y++;
+            move_in_direction(UP, entities, player_hitbox_start, player_hitbox_end);
+            move_in_direction(LEFT, entities, player_hitbox_start, player_hitbox_end);
         }
-        update_hitbox();
-        if(!check_position(entities, player_hitbox_start, player_hitbox_end))
+        if(direction == ORC_DIRECTION_DOWN_RIGHT)
         {
-            if(direction == UP)
-            {
-                position.x--;
-                position.y++;
-            }
-            if(direction == DOWN)
-            {
-                position.x++;
-                position.y--;
-            }
-            if(direction == LEFT)
-            {
-                position.x++;
-                position.y++;
-            }
-            if(direction == RIGHT)
-            {
-                position.x--;
-                position.y--;
-            }
-            update_hitbox();
-        }s
-
+            move_in_direction(DOWN, entities, player_hitbox_start, player_hitbox_end);
+            move_in_direction(RIGHT, entities, player_hitbox_start, player_hitbox_end);
+        }
         std::random_device dev;
         std::mt19937 rng;
         rng = std::mt19937(dev());

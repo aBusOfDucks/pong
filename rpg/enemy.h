@@ -33,7 +33,30 @@ protected:
             return false;
         return true;
     }
-
+    void move_in_direction(int dir, entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
+    {
+        if(dir == UP)
+            position.y--;
+        if(dir == DOWN)
+            position.y++;
+        if(dir == LEFT)
+            position.x--;
+        if(dir == RIGHT)
+            position.x++;
+        update_hitbox();
+        if(!check_position(entities, player_hitbox_start, player_hitbox_end))
+        {
+            if(dir == UP)
+                position.y++;
+            if(dir == DOWN)
+                position.y--;
+            if(dir == LEFT)
+                position.x++;
+            if(dir == RIGHT)
+                position.x--;
+            update_hitbox();
+        }
+    }
 public:
     void hit_by(int type)
     {
@@ -65,28 +88,7 @@ public:
     {
         if(!exist)
             return;
-        if(direction == UP)
-            position.y--;
-        if(direction == DOWN)
-            position.y++;
-        if(direction == LEFT)
-            position.x--;
-        if(direction == RIGHT)
-            position.x++;
-        update_hitbox();
-        if(!check_position(entities, player_hitbox_start, player_hitbox_end))
-        {
-            if(direction == UP)
-                position.y++;
-            if(direction == DOWN)
-                position.y--;
-            if(direction == LEFT)
-                position.x++;
-            if(direction == RIGHT)
-                position.x--;
-            update_hitbox();
-        }
-
+        move_in_direction(direction, entities, player_hitbox_start, player_hitbox_end);
         std::random_device dev;
         std::mt19937 rng;
         rng = std::mt19937(dev());
