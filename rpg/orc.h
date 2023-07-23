@@ -8,19 +8,15 @@ public:
     orc(double x, double y)
     {
         position.set(x, y);
-        size = ORC_SIZE;
-        hitbox_start.set(x - size / 2, y - size / 2);
-        hitbox_end.set(x + size / 2, y + size / 2);
+        bitmap = al_load_bitmap(ORC_1_PATH);
+        width = al_get_bitmap_width(bitmap);
+        height = al_get_bitmap_height(bitmap);
+        hitbox_start.set(x, y);
+        hitbox_end.set(x + width, y + height);
         health_points = ORC_HEALTH;
         fire_damage = ORC_FIRE_DAMAGE;
         magic_damage = ORC_MAGIC_DAMAGE;
-        color = ORC_COLOR;
         can_player_pass = false;
-    }
-    void update_hitbox()
-    {
-        hitbox_start.set(position.x - size / 2, position.y - size / 2);
-        hitbox_end.set(position.x + size / 2, position.y + size / 2);
     }
     void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
     {

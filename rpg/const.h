@@ -15,14 +15,14 @@
 
 #define MAP_WIDTH 1500
 #define MAP_HEIGHT 1500
-#define MAP_COLOR al_map_rgb(0, 100, 0)
+#define MAP_COLOR al_map_rgb(200, 200, 0)
 
 /* PROJECTILES */
 
 #define MAX_PROJECTILES 100
 
-#define MAGIC_ATACK 0
-#define FIRE_ATACK 1
+#define MAGIC_ATTACK 0
+#define FIRE_ATTACK 1
 
 #define MAGIC_PROJECTILE_SIZE 3
 #define MAGIC_PROJECTILE_SPEED 1
@@ -51,35 +51,25 @@
 #define ENTITIES_NUMBER_OF_TYPES 5
 
     /* OBSTACLES */
+#define TREE_1_PATH "bitmaps/tree1.piko"
 
-#define TREE_TRUNK_HEIGHT 10
-#define TREE_TRUNK_WIDTH 6
-#define TREE_LEAVES_HEIGHT 20
-#define TREE_LEAVES_WIDTH 20
-#define TREE_TRUNK_COLOR al_map_rgb(255, 200, 0)
-#define TREE_LEAVES_COLOR al_map_rgb(0, 255, 0)
+#define BUSH_1_PATH "bitmaps/bush1.piko"
 
-#define BUSH_SIZE 25
-#define BUSH_COLOR al_map_rgb(0, 200, 0)
-
-#define ROCK_SIZE 30
-#define ROCK_COLOR al_map_rgb(150, 150, 150)
+#define ROCK_1_PATH "bitmaps/rock1.piko"
 
     /* ENEMIES */
 
 #define CHANCE_TO_CHANGE_DIRECTION 200
 
-#define PIG_SIZE 20
 #define PIG_MAGIC_DAMAGE 25
 #define PIG_FIRE_DAMAGE 100
 #define PIG_HEALTH 60
-#define PIG_COLOR al_map_rgb(255, 0, 150)
+#define PIG_1_PATH "bitmaps/pig1.piko"
 
-#define ORC_SIZE 40
 #define ORC_MAGIC_DAMAGE 50
 #define ORC_FIRE_DAMAGE 35
 #define ORC_HEALTH 300
-#define ORC_COLOR al_map_rgb(0, 0, 0)
+#define ORC_1_PATH "bitmaps/orc1.piko"
 
 #define ORC_DIRECTION_UP_LEFT 0
 #define ORC_DIRECTION_UP_RIGHT 1

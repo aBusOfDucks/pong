@@ -5,6 +5,8 @@
 #include "coordinate.h"
 #include "obstacle.h"
 #include <allegro5/allegro5.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
 
@@ -15,29 +17,14 @@ public:
     {
         position.set(x, y);
         hitbox_start.set(x, y);
-        hitbox_end.set(x + std::max(TREE_TRUNK_WIDTH, TREE_LEAVES_WIDTH), y + TREE_LEAVES_HEIGHT + TREE_TRUNK_HEIGHT);
+        bitmap = al_load_bitmap(TREE_1_PATH);
+        width = al_get_bitmap_width(bitmap);
+        height = al_get_bitmap_height(bitmap);
+        hitbox_end.set(x + width, y + height);
         is_destroyed_by_magic = false;
         is_destroyed_by_fire = true;
         can_player_pass = false;
     }
-
-    void draw(coordinate camera) override
-    {
-        if(!exist)
-            return;
-        if(position.x + std::max(TREE_TRUNK_WIDTH, TREE_LEAVES_WIDTH) < camera.x || position.y + TREE_LEAVES_HEIGHT + TREE_TRUNK_HEIGHT < camera.y)
-            return;
-        if(position.x >= camera.x + WINDOW_WIDTH || position.y >= camera.y + WINDOW_HEIGHT)
-            return;
-
-        int draw_x = position.x - camera.x;
-        int draw_y = position.y - camera.y;
-        al_draw_filled_rectangle(draw_x, draw_y, draw_x + TREE_LEAVES_WIDTH, draw_y +  TREE_LEAVES_HEIGHT, TREE_LEAVES_COLOR);
-        draw_x += (TREE_LEAVES_WIDTH - TREE_TRUNK_WIDTH) / 2;
-        draw_y += TREE_LEAVES_HEIGHT;
-        al_draw_filled_rectangle(draw_x, draw_y, draw_x + TREE_TRUNK_WIDTH, draw_y +  TREE_TRUNK_HEIGHT, TREE_TRUNK_COLOR);
-    }
-
 };
 
 #endif //__TREE_H__

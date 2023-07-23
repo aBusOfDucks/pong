@@ -234,13 +234,13 @@ public:
                     int poz_y = p->get_position().y;
                     double dx = x + camera_position.x - poz_x;
                     double dy = y + camera_position.y - poz_y;
-                    if(type == MAGIC_ATACK)
+                    if(type == MAGIC_ATTACK)
                     {
                         magic_projectile mp;
                         mp.set(poz_x, poz_y, dx, dy);
                         projectiles[i] = mp;
                     }
-                    if(type == FIRE_ATACK)
+                    if(type == FIRE_ATTACK)
                     {
                         fire_projectile fp;
                         fp.set(poz_x, poz_y, dx, dy);

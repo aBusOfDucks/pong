@@ -13,7 +13,8 @@ protected:
     coordinate hitbox_end;
     coordinate hitbox_start;
     bool exist = true;
-
+    ALLEGRO_BITMAP * bitmap;
+    int width, height;
 
 public:
     entity()
@@ -25,7 +26,19 @@ public:
     {
         position.set(x, y);
     }
-    virtual void draw(coordinate camera) = 0;
+    virtual void draw(coordinate camera)
+    {
+        if(!exist)
+            return;
+        if(position.x + width < camera.x || position.y + height < camera.y)
+            return;
+        if(position.x >= camera.x + WINDOW_WIDTH || position.y >= camera.y + WINDOW_HEIGHT)
+            return;
+
+        int draw_x = position.x - camera.x;
+        int draw_y = position.y - camera.y;
+        al_draw_bitmap(bitmap, draw_x, draw_y, 0);
+    }
 
     bool entity_collide(entity * e)
     {

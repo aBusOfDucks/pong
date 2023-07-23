@@ -1,5 +1,6 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
 #include <mutex>
 #include <thread>
 #include <condition_variable>
@@ -13,8 +14,10 @@
 void init(game & g, player & p)
 {
     al_init();
-    al_install_keyboard();
+    al_init_image_addon();
+    al_init_primitives_addon();
     al_install_mouse();
+    al_install_keyboard();
     g.set(&p);
 }
 
