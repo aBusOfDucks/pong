@@ -14,22 +14,24 @@ public:
     {
         dx = 0;
         dy = 0;
-        color = FIRE_PROJECTILE_COLOR;
-        size = FIRE_PROJECTILE_SIZE;
         speed = FIRE_PROJECTILE_SPEED;
         range = FIRE_PROJECTILE_RANGE;
         type = FIRE_TYPE;
+        bitmap = al_load_bitmap(FIRE_PROJECTILE_PATH);
+        width = al_get_bitmap_width(bitmap);
+        height = al_get_bitmap_height(bitmap);
     }
 
     fire_projectile(coordinate camera, int mouse_x, int mouse_y)
     {
-        position.x = camera.x + mouse_x - FIRE_PROJECTILE_SIZE / 2;
-        position.y = camera.y + mouse_y - FIRE_PROJECTILE_SIZE / 2;
-        color = FIRE_PROJECTILE_COLOR;
-        size = FIRE_PROJECTILE_SIZE;
+        position.x = camera.x + mouse_x;
+        position.y = camera.y + mouse_y;
         speed = FIRE_PROJECTILE_SPEED;
         range = FIRE_PROJECTILE_RANGE;
         type = FIRE_TYPE;
+        bitmap = al_load_bitmap(FIRE_PROJECTILE_PATH);
+        width = al_get_bitmap_width(bitmap);
+        height = al_get_bitmap_height(bitmap);
     }
 
 };
