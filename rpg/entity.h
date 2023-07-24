@@ -78,6 +78,14 @@ public:
     {
         exist = false;
     }
+    bool check_map_position()
+    {
+        if(position.x < 0 || position.y < 0)
+            return false;
+        if(position.x + width >= MAP_WIDTH || position.y + height >= MAP_HEIGHT)
+            return false;
+        return true;
+    }
     virtual void hit_by(int type) = 0;
     virtual void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end) = 0;
 };

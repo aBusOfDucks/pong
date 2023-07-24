@@ -20,6 +20,8 @@ private:
     coordinate position;
     int direction_x;
     int direction_y;
+    ALLEGRO_BITMAP * bitmap;
+    int width, height;
 
 public:
 
@@ -27,14 +29,17 @@ public:
     {
         direction_x = 0;
         direction_y = 0;
-        position.set(PLAYER_SIZE / 2, PLAYER_SIZE / 2);
+        position.set(0, 0);
+        bitmap = al_load_bitmap(PLAYER_PATH);
+        width = al_get_bitmap_width(bitmap);
+        height = al_get_bitmap_height(bitmap);
     }
     void move(entity ** entities)
     {
         std::unique_lock<std::mutex> lock(mutex_position);
         position.change(direction_x, direction_y);
-        coordinate hitbox_start(position.x - PLAYER_SIZE / 2, position.y - PLAYER_SIZE / 2);
-        coordinate hitbox_end(position.x + PLAYER_SIZE / 2, position.y + PLAYER_SIZE / 2);
+        coordinate hitbox_start(position.x, position.y);
+        coordinate hitbox_end(position.x + width, position.y + height);
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
             if(entities[i]->collide(hitbox_start, hitbox_end))
@@ -43,8 +48,8 @@ public:
                 i = MAX_ENTITIES;
             }
         }
-        position.trim(MAP_WIDTH - PLAYER_SIZE / 2, MAP_HEIGHT - PLAYER_SIZE / 2);
-        position.trim_bottom(PLAYER_SIZE / 2, PLAYER_SIZE / 2);
+        position.trim(MAP_WIDTH - width, MAP_HEIGHT - height);
+        position.trim_bottom(0, 0);
     }
 
     void change_direction(int dx, int dy)
@@ -64,13 +69,14 @@ public:
 
     coordinate get_hitbox_start()
     {
-        coordinate hitbox_start(position.x - PLAYER_SIZE / 2, position.y - PLAYER_SIZE / 2);
-        return hitbox_start;
+        std::unique_lock<std::mutex> lock(mutex_position);
+        return position;
     }
 
     coordinate get_hitbox_end()
     {
-        coordinate hitbox_end(position.x + PLAYER_SIZE / 2, position.y + PLAYER_SIZE / 2);
+        std::unique_lock<std::mutex> lock(mutex_position);
+        coordinate hitbox_end(position.x + width, position.y + height);
         return hitbox_end;
     }
 
@@ -88,7 +94,7 @@ public:
             return;
         int draw_x = position.x - camera.x;
         int draw_y = position.y - camera.y;
-        al_draw_filled_circle(draw_x, draw_y, PLAYER_SIZE / 2, PLAYER_COLOR);
+        al_draw_bitmap(bitmap, draw_x, draw_y, 0);
     }
 
 };

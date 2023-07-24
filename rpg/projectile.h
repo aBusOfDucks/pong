@@ -54,7 +54,7 @@ public:
     {
         if (range <= 0)
             return false;
-        if(position.x < 0 || position.y < 0)
+        if(position.x < - size / 2 || position.y < - size / 2)
             return false;
         if(position.x >= MAP_WIDTH || position.y >= MAP_HEIGHT)
             return false;

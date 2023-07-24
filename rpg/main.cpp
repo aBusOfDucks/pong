@@ -11,14 +11,15 @@
 #include "game.h"
 #include "const.h"
 
-void init(game & g, player & p)
+void init(game & g)
 {
     al_init();
     al_init_image_addon();
     al_init_primitives_addon();
     al_install_mouse();
     al_install_keyboard();
-    g.set(&p);
+    player * p = new player();
+    g.set(p);
 }
 
 void create_display(game & g)
@@ -38,8 +39,7 @@ void create_display(game & g)
 int main()
 {
     game g;
-    player p;
-    init(g, p);
+    init(g);
 
     std::thread display([&g]{create_display(g);});
     std::thread input([&g]{player_input_manager(g);});

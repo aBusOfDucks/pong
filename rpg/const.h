@@ -15,7 +15,7 @@
 
 #define MAP_WIDTH 1500
 #define MAP_HEIGHT 1500
-#define MAP_COLOR al_map_rgb(200, 200, 0)
+#define MAP_COLOR al_map_rgb(150, 200, 0)
 
 /* PROJECTILES */
 
@@ -80,8 +80,7 @@
 
 /* PLAYER */
 
-#define PLAYER_SIZE 20
-#define PLAYER_COLOR al_map_rgb(255, 0, 0)
+#define PLAYER_PATH "bitmaps/player.piko"
 
 #define UP 0
 #define DOWN 1

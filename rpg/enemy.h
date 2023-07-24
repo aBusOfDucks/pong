@@ -19,7 +19,7 @@ protected:
         int number_of_collisions = 0;
         if(position.x < 0 || position.y < 0)
             return false;
-        if(position.x >= MAP_WIDTH || position.y >= MAP_HEIGHT)
+        if(position.x + width >= MAP_WIDTH || position.y + height >= MAP_HEIGHT)
             return false;
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
