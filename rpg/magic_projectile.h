@@ -1,11 +1,6 @@
 #ifndef __MAGIC_PROJECTILE_H__
 #define __MAGIC_PROJECTILE_H__
 
-#include "const.h"
-#include "coordinate.h"
-#include <mutex>
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_primitives.h>
 #include "projectile.h"
 
 class magic_projectile: public projectile {

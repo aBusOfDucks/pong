@@ -1,12 +1,7 @@
 #ifndef __PROJECTILE_H__
 #define __PROJECTILE_H__
 
-#include "const.h"
-#include <iostream>
-#include "coordinate.h"
 #include <mutex>
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_primitives.h>
 #include <cmath>
 #include "entity.h"
 
@@ -16,9 +11,9 @@ public:
     std::mutex mutex_position;
     coordinate position;
     double dx, dy;
-    double speed = 1;
-    int range = 10;
-    int type = 3;
+    double speed;
+    int range;
+    int type;
     int width, height;
     int bitmap_index;
 

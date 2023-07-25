@@ -7,16 +7,12 @@ class orc : public enemy {
 public:
     orc(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
-        position.set(x, y);
         bitmap_index = BITMAP_ORC_INDEX;
-        width = al_get_bitmap_width(bitmaps[bitmap_index]);
-        height = al_get_bitmap_height(bitmaps[bitmap_index]);
-        hitbox_start.set(x, y);
-        hitbox_end.set(x + width, y + height);
         health_points = ORC_HEALTH;
         fire_damage = ORC_FIRE_DAMAGE;
         magic_damage = ORC_MAGIC_DAMAGE;
         can_player_pass = false;
+        entity::init(x, y, bitmaps);
     }
     void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
     {

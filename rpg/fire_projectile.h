@@ -1,11 +1,6 @@
 #ifndef __FIRE_PROJECTILE_H__
 #define __FIRE_PROJECTILE_H__
 
-#include "const.h"
-#include "coordinate.h"
-#include <mutex>
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_primitives.h>
 #include "projectile.h"
 
 class fire_projectile: public projectile {

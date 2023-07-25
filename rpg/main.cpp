@@ -9,7 +9,6 @@
 #include <queue>
 #include "input.h"
 #include "game.h"
-#include "const.h"
 
 void init(game & g)
 {

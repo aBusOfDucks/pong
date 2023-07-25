@@ -2,9 +2,6 @@
 #define __ENEMY_H__
 
 #include "entity.h"
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_primitives.h>
-#include <iostream>
 #include <random>
 
 class enemy : public entity {

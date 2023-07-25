@@ -9,21 +9,14 @@
 #include <random>
 #include <iostream>
 #include <queue>
-#include "const.h"
-#include "coordinate.h"
 #include "player.h"
-#include "projectile.h"
 #include "magic_projectile.h"
 #include "fire_projectile.h"
-#include "entity.h"
 #include "tree.h"
 #include "bush.h"
-#include "enemy.h"
 #include "orc.h"
 #include "pig.h"
 #include "rock.h"
-#include <set>
-#include "bitmaps.h"
 
 class game{
 private:

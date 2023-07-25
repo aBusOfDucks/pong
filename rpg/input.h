@@ -10,8 +10,6 @@
 #include <iostream>
 #include <queue>
 #include "game.h"
-#include "const.h"
-#include "player.h"
 
 void player_input_manager(game & g)
 {

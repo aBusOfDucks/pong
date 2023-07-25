@@ -1,18 +1,12 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_primitives.h>
 #include <mutex>
 #include <thread>
 #include <condition_variable>
 #include <random>
-#include <iostream>
 #include <queue>
-#include "const.h"
-#include "coordinate.h"
 #include "entity.h"
-#include "bitmaps.h"
 
 class player{
 private:

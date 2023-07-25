@@ -2,6 +2,7 @@
 #define __ENTITY_H__
 
 #include "coordinate.h"
+#include "const.h"
 #include <iostream>
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
@@ -16,6 +17,14 @@ protected:
     bool exist = true;
     int bitmap_index;
     int width, height;
+    void init(double x, double y, ALLEGRO_BITMAP ** bitmaps)
+    {
+        position.set(x, y);
+        width = al_get_bitmap_width(bitmaps[bitmap_index]);
+        height = al_get_bitmap_height(bitmaps[bitmap_index]);
+        hitbox_start.set(x, y);
+        hitbox_end.set(x + width, y + height);
+    }
 
 public:
     entity()
