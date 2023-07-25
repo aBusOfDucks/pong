@@ -12,6 +12,7 @@
 #include "const.h"
 #include "coordinate.h"
 #include "entity.h"
+#include "bitmaps.h"
 
 class player{
 private:
@@ -20,19 +21,17 @@ private:
     coordinate position;
     int direction_x;
     int direction_y;
-    ALLEGRO_BITMAP * bitmap;
     int width, height;
 
 public:
 
-    player()
+    player(ALLEGRO_BITMAP ** bitmaps)
     {
         direction_x = 0;
         direction_y = 0;
         position.set(0, 0);
-        bitmap = al_load_bitmap(PLAYER_PATH);
-        width = al_get_bitmap_width(bitmap);
-        height = al_get_bitmap_height(bitmap);
+        width = al_get_bitmap_width(bitmaps[BITMAP_PLAYER_INDEX]);
+        height = al_get_bitmap_height(bitmaps[BITMAP_PLAYER_INDEX]);
     }
     void move(entity ** entities)
     {
@@ -86,7 +85,7 @@ public:
         return position;
     }
 
-    void draw(coordinate camera)
+    void draw(coordinate camera, ALLEGRO_BITMAP ** bitmaps)
     {
         if(position.x < camera.x || position.y < camera.y)
             return;
@@ -94,7 +93,7 @@ public:
             return;
         int draw_x = position.x - camera.x;
         int draw_y = position.y - camera.y;
-        al_draw_bitmap(bitmap, draw_x, draw_y, 0);
+        al_draw_bitmap(bitmaps[BITMAP_PLAYER_INDEX], draw_x, draw_y, 0);
     }
 
 };

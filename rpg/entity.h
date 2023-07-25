@@ -5,6 +5,7 @@
 #include <iostream>
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
+#include "bitmaps.h"
 
 class entity {
 protected:
@@ -13,7 +14,7 @@ protected:
     coordinate hitbox_end;
     coordinate hitbox_start;
     bool exist = true;
-    ALLEGRO_BITMAP * bitmap;
+    int bitmap_index;
     int width, height;
 
 public:
@@ -26,7 +27,7 @@ public:
     {
         position.set(x, y);
     }
-    virtual void draw(coordinate camera)
+    virtual void draw(coordinate camera, ALLEGRO_BITMAP ** bitmaps)
     {
         if(!exist)
             return;
@@ -37,7 +38,7 @@ public:
 
         int draw_x = position.x - camera.x;
         int draw_y = position.y - camera.y;
-        al_draw_bitmap(bitmap, draw_x, draw_y, 0);
+        al_draw_bitmap(bitmaps[bitmap_index], draw_x, draw_y, 0);
     }
 
     bool entity_collide(entity * e)

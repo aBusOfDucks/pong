@@ -23,6 +23,7 @@
 #include "pig.h"
 #include "rock.h"
 #include <set>
+#include "bitmaps.h"
 
 class game{
 private:
@@ -47,6 +48,8 @@ private:
     entity * entities[MAX_ENTITIES];
     bool entity_slot_used[MAX_ENTITIES];
     int used_entities = 0;
+
+    ALLEGRO_BITMAP * bitmaps[BITMAPS_NUMBER];
 
     void move()
     {
@@ -84,14 +87,14 @@ public:
     void draw()
     {
         al_clear_to_color(MAP_COLOR);
-        p->draw(camera_position);
+        p->draw(camera_position, bitmaps);
         {
             std::unique_lock<std::mutex> lock(mutex_projectiles);
             for (int i = 0; i < MAX_PROJECTILES; i++)
             {
                 if (projectile_slot_used[i])
                 {
-                    projectiles[i].draw(camera_position);
+                    projectiles[i].draw(camera_position, bitmaps);
                 }
             }
         }
@@ -99,15 +102,16 @@ public:
         {
             if(entity_slot_used[i])
             {
-                entities[i]->draw(camera_position);
+                entities[i]->draw(camera_position, bitmaps);
             }
         }
         al_flip_display();
     }
 
-    void set(player * pl)
+    void set()
     {
-        p = pl;
+        load_bitmaps(bitmaps);
+        p = new player(bitmaps);
         std::unique_lock<std::mutex> lock(mutex_projectiles);
         used_projectiles = 0;
         for(int i = 0; i < MAX_PROJECTILES; i++)
@@ -128,23 +132,23 @@ public:
             int type = entity_type_generator(rng);
             if(type == BUSH_TYPE)
             {
-                entities[i] = new bush(entity_x_generator(rng), entity_y_generator(rng));
+                entities[i] = new bush(entity_x_generator(rng), entity_y_generator(rng), bitmaps);
             }
             if(type == TREE_TYPE)
             {
-                entities[i] = new tree(entity_x_generator(rng), entity_y_generator(rng));
+                entities[i] = new tree(entity_x_generator(rng), entity_y_generator(rng), bitmaps);
             }
             if(type == PIG_TYPE)
             {
-                entities[i] = new pig(entity_x_generator(rng), entity_y_generator(rng));
+                entities[i] = new pig(entity_x_generator(rng), entity_y_generator(rng), bitmaps);
             }
             if(type == ROCK_TYPE)
             {
-                entities[i] = new rock(entity_x_generator(rng), entity_y_generator(rng));
+                entities[i] = new rock(entity_x_generator(rng), entity_y_generator(rng), bitmaps);
             }
             if(type == ORC_TYPE)
             {
-                entities[i] = new orc(entity_x_generator(rng), entity_y_generator(rng));
+                entities[i] = new orc(entity_x_generator(rng), entity_y_generator(rng), bitmaps);
             }
             used_entities++;
             entity_slot_used[i] = true;
@@ -236,13 +240,13 @@ public:
                     double dy = y + camera_position.y - poz_y;
                     if(type == MAGIC_ATTACK)
                     {
-                        magic_projectile mp;
+                        magic_projectile mp(bitmaps);
                         mp.set(poz_x, poz_y, dx, dy);
                         projectiles[i] = mp;
                     }
                     if(type == FIRE_ATTACK)
                     {
-                        fire_projectile fp;
+                        fire_projectile fp(bitmaps);
                         fp.set(poz_x, poz_y, dx, dy);
                         projectiles[i] = fp;
                     }

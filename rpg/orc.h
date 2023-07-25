@@ -5,12 +5,12 @@
 
 class orc : public enemy {
 public:
-    orc(double x, double y)
+    orc(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
         position.set(x, y);
-        bitmap = al_load_bitmap(ORC_1_PATH);
-        width = al_get_bitmap_width(bitmap);
-        height = al_get_bitmap_height(bitmap);
+        bitmap_index = BITMAP_ORC_INDEX;
+        width = al_get_bitmap_width(bitmaps[bitmap_index]);
+        height = al_get_bitmap_height(bitmaps[bitmap_index]);
         hitbox_start.set(x, y);
         hitbox_end.set(x + width, y + height);
         health_points = ORC_HEALTH;

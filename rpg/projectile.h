@@ -19,8 +19,8 @@ public:
     double speed = 1;
     int range = 10;
     int type = 3;
-    ALLEGRO_BITMAP * bitmap;
     int width, height;
+    int bitmap_index;
 
     projectile()
     {
@@ -61,7 +61,7 @@ public:
         return true;
     }
 
-    void draw(coordinate camera)
+    void draw(coordinate camera, ALLEGRO_BITMAP ** bitmaps)
     {
         if(position.x < camera.x || position.y < camera.y)
             return;
@@ -69,7 +69,7 @@ public:
             return;
         int draw_x = position.x - camera.x;
         int draw_y = position.y - camera.y;
-        al_draw_bitmap(bitmap, draw_x, draw_y, 0);
+        al_draw_bitmap(bitmaps[bitmap_index], draw_x, draw_y, 0);
     }
 
     const void set(int new_x, int new_y, double new_dx, double new_dy)
@@ -87,12 +87,12 @@ public:
         this->position = other.position;
         this->dx = other.dx;
         this->dy = other.dy;
-        this->bitmap = other.bitmap;
         this->speed = other.speed;
         this->range = other.range;
         this->type = other.type;
         this->width = other.width;
         this->height = other.height;
+        this->bitmap_index = other.bitmap_index;
         return *this;
     }
 

@@ -18,8 +18,7 @@ void init(game & g)
     al_init_primitives_addon();
     al_install_mouse();
     al_install_keyboard();
-    player * p = new player();
-    g.set(p);
+    g.set();
 }
 
 void create_display(game & g)
