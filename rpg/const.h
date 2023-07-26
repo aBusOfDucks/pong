@@ -47,6 +47,11 @@
 
 #define ENTITIES_NUMBER_OF_TYPES 5
 
+    /* PLANTS */
+
+#define TREE_TIME_TO_BURN 600
+#define BUSH_TIME_TO_BURN 300
+
     /* ENEMIES */
 
 #define CHANCE_TO_CHANGE_DIRECTION 200
@@ -86,7 +91,9 @@
 #define BITMAP_TREE_PATH "bitmaps/tree1.piko"
 #define BITMAP_FIRE_PROJECTILE_PATH "bitmaps/fire_projectile.piko"
 #define BITMAP_MAGIC_PROJECTILE_PATH "bitmaps/magic_projectile.piko"
+#define BITMAP_TREE_ON_FIRE_PATH "bitmaps/tree1_on_fire.piko"
+#define BITMAP_BUSH_ON_FIRE_PATH "bitmaps/bush1_on_fire.piko"
 
-#define BITMAPS_NUMBER 8
+#define BITMAPS_NUMBER 10
 
 #endif /* __CONST_H__ */

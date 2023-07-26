@@ -1,18 +1,17 @@
 #ifndef __TREE_H__
 #define __TREE_H__
 
-#include "obstacle.h"
+#include "plant.h"
 
-class tree : public obstacle{
+class tree : public plant{
 public:
 
     tree(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
         bitmap_index = BITMAP_TREE_INDEX;
-        is_destroyed_by_magic = false;
-        is_destroyed_by_fire = true;
-        can_player_pass = false;
-        entity::init(x, y, bitmaps);
+        bitmap_on_fire_index = BITMAP_TREE_ON_FIRE_INDEX;
+        time_to_burn = TREE_TIME_TO_BURN;
+        plant::init(x, y, bitmaps);
     }
 };
 

@@ -36,7 +36,7 @@ public:
     {
         position.set(x, y);
     }
-    virtual void draw(coordinate camera, ALLEGRO_BITMAP ** bitmaps)
+    void draw(coordinate camera, ALLEGRO_BITMAP ** bitmaps)
     {
         if(!exist)
             return;
