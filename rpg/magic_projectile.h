@@ -11,7 +11,7 @@ public:
         dy = 0;
         speed = MAGIC_PROJECTILE_SPEED;
         range = MAGIC_PROJECTILE_RANGE;
-        type = MAGIC_TYPE;
+        type = MAGIC_PROJECTILE_TYPE;
         bitmap_index = BITMAP_MAGIC_PROJECTILE_INDEX;
         width = al_get_bitmap_width(bitmaps[bitmap_index]);
         height = al_get_bitmap_height(bitmaps[bitmap_index]);
@@ -23,7 +23,7 @@ public:
         position.y = camera.y + mouse_y;
         speed = MAGIC_PROJECTILE_SPEED;
         range = MAGIC_PROJECTILE_RANGE;
-        type = MAGIC_TYPE;
+        type = MAGIC_PROJECTILE_TYPE;
         bitmap_index = BITMAP_MAGIC_PROJECTILE_INDEX;
         width = al_get_bitmap_width(bitmaps[bitmap_index]);
         height = al_get_bitmap_height(bitmaps[bitmap_index]);

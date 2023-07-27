@@ -12,6 +12,7 @@ public:
         fire_damage = ORC_FIRE_DAMAGE;
         magic_damage = ORC_MAGIC_DAMAGE;
         can_player_pass = false;
+        entity_type = ORC_TYPE;
         entity::init(x, y, bitmaps);
     }
     void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)

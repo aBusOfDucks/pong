@@ -123,23 +123,23 @@ public:
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
             int type = entity_type_generator(rng);
-            if(type == BUSH_TYPE)
+            if(type == ENTITY_TYPE_BUSH)
             {
                 entities[i] = new bush(entity_x_generator(rng), entity_y_generator(rng), bitmaps);
             }
-            if(type == TREE_TYPE)
+            if(type == ENTITY_TYPE_TREE)
             {
                 entities[i] = new tree(entity_x_generator(rng), entity_y_generator(rng), bitmaps);
             }
-            if(type == PIG_TYPE)
+            if(type == ENTITY_TYPE_PIG)
             {
                 entities[i] = new pig(entity_x_generator(rng), entity_y_generator(rng), bitmaps);
             }
-            if(type == ROCK_TYPE)
+            if(type == ENTITY_TYPE_ROCK)
             {
                 entities[i] = new rock(entity_x_generator(rng), entity_y_generator(rng), bitmaps);
             }
-            if(type == ORC_TYPE)
+            if(type == ENTITY_TYPE_ORC)
             {
                 entities[i] = new orc(entity_x_generator(rng), entity_y_generator(rng), bitmaps);
             }

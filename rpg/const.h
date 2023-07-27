@@ -24,9 +24,6 @@
 #define MAGIC_ATTACK 0
 #define FIRE_ATTACK 1
 
-#define MAGIC_TYPE 0
-#define FIRE_TYPE 1
-
 #define MAGIC_PROJECTILE_SPEED 1
 #define MAGIC_PROJECTILE_LIFETIME 3
 #define MAGIC_PROJECTILE_RANGE (TPS * MAGIC_PROJECTILE_LIFETIME)
@@ -39,19 +36,20 @@
 
 #define MAX_ENTITIES 250
 
-#define TREE_TYPE 0
-#define BUSH_TYPE 1
-#define PIG_TYPE 2
-#define ROCK_TYPE 3
-#define ORC_TYPE 4
+#define ENTITY_TYPE_PIG 0
+#define ENTITY_TYPE_ORC 1
+#define ENTITY_TYPE_ROCK 2
+#define ENTITY_TYPE_BUSH 3
+#define ENTITY_TYPE_TREE 4
 
 #define ENTITIES_NUMBER_OF_TYPES 5
 
     /* PLANTS */
 
 #define TREE_TIME_TO_BURN 600
-#define BUSH_TIME_TO_BURN 300
 
+#define BUSH_TIME_TO_BURN 300
+#define BUSH_BERRIES_RESPAWN_TIME 1000
     /* ENEMIES */
 
 #define CHANCE_TO_CHANGE_DIRECTION 200
@@ -93,7 +91,20 @@
 #define BITMAP_MAGIC_PROJECTILE_PATH "bitmaps/magic_projectile.piko"
 #define BITMAP_TREE_ON_FIRE_PATH "bitmaps/tree1_on_fire.piko"
 #define BITMAP_BUSH_ON_FIRE_PATH "bitmaps/bush1_on_fire.piko"
+#define BITMAP_BUSH_NO_BERRIES_PATH "bitmaps/bush1_no_berries.piko"
+#define BITMAP_BUSH_NO_BERRIES_ON_FIRE_PATH "bitmaps/bush1_no_berries_on_fire.piko"
 
-#define BITMAPS_NUMBER 10
+#define BITMAPS_NUMBER 12
+
+/* TYPES */
+
+#define PLAYER_TYPE 0
+#define TREE_TYPE 1
+#define BUSH_TYPE 2
+#define PIG_TYPE 3
+#define ROCK_TYPE 4
+#define ORC_TYPE 5
+#define FIRE_PROJECTILE_TYPE 6
+#define MAGIC_PROJECTILE_TYPE 7
 
 #endif /* __CONST_H__ */

@@ -17,6 +17,8 @@ protected:
     bool exist = true;
     int bitmap_index;
     int width, height;
+    int entity_type;
+
     void init(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
         position.set(x, y);
@@ -27,6 +29,11 @@ protected:
     }
 
 public:
+    int get_type()
+    {
+        return entity_type;
+    }
+
     entity()
     {
         position.set(0, 0);
@@ -50,15 +57,20 @@ public:
         al_draw_bitmap(bitmaps[bitmap_index], draw_x, draw_y, 0);
     }
 
-    bool entity_collide(entity * e)
+    virtual bool entity_collide(entity * e)
     {
-        return e->collide(hitbox_start, hitbox_end);
+        if(!exist)
+            return false;
+        return e->collide(hitbox_start, hitbox_end, entity_type);
     }
 
-    bool collide(coordinate left_upper, coordinate right_bottom)
+    virtual bool collide(coordinate left_upper, coordinate right_bottom, int type)
     {
-        if(!exist || can_player_pass)
+        if(!exist)
             return false;
+        if(type == PLAYER_TYPE && can_player_pass)
+            return false;
+
         coordinate left_bottom(left_upper.x, right_bottom.y);
         coordinate right_upper(right_bottom.x, left_upper.y);
 
@@ -73,6 +85,7 @@ public:
 
         coordinate hitbox_left_bottom(hitbox_start.x, hitbox_end.y);
         coordinate hitbox_right_upper(hitbox_end.x, hitbox_start.y);
+
         if(position.in_square(left_upper, right_bottom))
             return true;
         if(hitbox_end.in_square(left_upper, right_bottom))

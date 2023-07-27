@@ -11,7 +11,7 @@ public:
         dy = 0;
         speed = FIRE_PROJECTILE_SPEED;
         range = FIRE_PROJECTILE_RANGE;
-        type = FIRE_TYPE;
+        type = FIRE_PROJECTILE_TYPE;
         bitmap_index = BITMAP_FIRE_PROJECTILE_INDEX;
         width = al_get_bitmap_width(bitmaps[bitmap_index]);
         height = al_get_bitmap_height(bitmaps[bitmap_index]);
@@ -23,7 +23,7 @@ public:
         position.y = camera.y + mouse_y;
         speed = FIRE_PROJECTILE_SPEED;
         range = FIRE_PROJECTILE_RANGE;
-        type = FIRE_TYPE;
+        type = FIRE_PROJECTILE_TYPE;
         bitmap_index = BITMAP_FIRE_PROJECTILE_INDEX;
         width = al_get_bitmap_width(bitmaps[bitmap_index]);
         height = al_get_bitmap_height(bitmaps[bitmap_index]);

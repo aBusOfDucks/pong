@@ -6,8 +6,10 @@
 class plant : public obstacle {
 protected:
     bool is_on_fire;
+    int bitmap_default;
     int bitmap_on_fire_index;
     int time_to_burn;
+    int time_to_burn_default;
 
     void init(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
@@ -15,13 +17,15 @@ protected:
         is_destroyed_by_fire = true;
         can_player_pass = false;
         is_on_fire = false;
+        bitmap_default = bitmap_index;
+        time_to_burn_default = time_to_burn;
         entity::init(x, y, bitmaps);
     }
 
 public:
-    void hit_by(int type) override
+    virtual void hit_by(int type) override
     {
-        if(type == FIRE_TYPE)
+        if(type == FIRE_PROJECTILE_TYPE)
         {
             if (is_on_fire)
                 kill();
@@ -31,8 +35,17 @@ public:
                 bitmap_index = bitmap_on_fire_index;
             }
         }
+        if(type == MAGIC_PROJECTILE_TYPE)
+        {
+            if(is_on_fire)
+            {
+                is_on_fire = false;
+                bitmap_index = bitmap_default;
+                time_to_burn = time_to_burn_default;
+            }
+        }
     }
-    void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
+    virtual void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
     {
         if (exist)
         {

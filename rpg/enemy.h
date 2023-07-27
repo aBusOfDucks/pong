@@ -20,12 +20,12 @@ protected:
             return false;
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
-            if(entities[i]->collide(hitbox_start, hitbox_end))
+            if(entities[i]->collide(hitbox_start, hitbox_end, entity_type))
                 number_of_collisions++;
         }
         if(number_of_collisions > 1)
             return false;
-        if(collide(player_hitbox_start, player_hitbox_end))
+        if(collide(player_hitbox_start, player_hitbox_end, PLAYER_TYPE))
             return false;
         return true;
     }
@@ -61,11 +61,11 @@ protected:
 public:
     void hit_by(int type)
     {
-        if(type == FIRE_TYPE)
+        if(type == FIRE_PROJECTILE_TYPE)
         {
             health_points -= fire_damage;
         }
-        if(type == MAGIC_TYPE)
+        if(type == MAGIC_PROJECTILE_TYPE)
         {
             health_points -= magic_damage;
         }

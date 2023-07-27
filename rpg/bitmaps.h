@@ -14,6 +14,9 @@
 #define BITMAP_MAGIC_PROJECTILE_INDEX 7
 #define BITMAP_TREE_ON_FIRE_INDEX 8
 #define BITMAP_BUSH_ON_FIRE_INDEX 9
+#define BITMAP_BUSH_NO_BERRIES_INDEX 10
+#define BITMAP_BUSH_NO_BERRIES_ON_FIRE_INDEX 11
+
 
 void load_bitmaps(ALLEGRO_BITMAP ** bitmaps)
 {
@@ -27,6 +30,8 @@ void load_bitmaps(ALLEGRO_BITMAP ** bitmaps)
     bitmaps[7] = al_load_bitmap(BITMAP_MAGIC_PROJECTILE_PATH);
     bitmaps[8] = al_load_bitmap(BITMAP_TREE_ON_FIRE_PATH);
     bitmaps[9] = al_load_bitmap(BITMAP_BUSH_ON_FIRE_PATH);
+    bitmaps[10] = al_load_bitmap(BITMAP_BUSH_NO_BERRIES_PATH);
+    bitmaps[11] = al_load_bitmap(BITMAP_BUSH_NO_BERRIES_ON_FIRE_PATH);
 }
 
 #endif //RPG_BITMAPS_H

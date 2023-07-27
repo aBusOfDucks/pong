@@ -11,9 +11,9 @@ protected:
 public:
     void hit_by(int type) override
     {
-        if(type == FIRE_TYPE && is_destroyed_by_fire)
+        if(type == FIRE_PROJECTILE_TYPE && is_destroyed_by_fire)
             kill();
-        if(type == MAGIC_TYPE && is_destroyed_by_magic)
+        if(type == MAGIC_PROJECTILE_TYPE && is_destroyed_by_magic)
             kill();
     }
     void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)

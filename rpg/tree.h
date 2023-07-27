@@ -11,6 +11,7 @@ public:
         bitmap_index = BITMAP_TREE_INDEX;
         bitmap_on_fire_index = BITMAP_TREE_ON_FIRE_INDEX;
         time_to_burn = TREE_TIME_TO_BURN;
+        entity_type = TREE_TYPE;
         plant::init(x, y, bitmaps);
     }
 };

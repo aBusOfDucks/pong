@@ -37,7 +37,7 @@ public:
         coordinate hitbox_end(position.x + width, position.y + height);
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
-            if(entities[i]->collide(hitbox_start, hitbox_end))
+            if(entities[i]->collide(hitbox_start, hitbox_end, type))
             {
                 entities[i]->hit_by(type);
                 destroy();
