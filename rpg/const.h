@@ -11,12 +11,6 @@
 #define WINDOW_WIDTH 900
 #define WINDOW_HEIGHT 900
 
-/* MAP */
-
-#define MAP_WIDTH 1500
-#define MAP_HEIGHT 1500
-#define MAP_COLOR al_map_rgb(150, 200, 0)
-
 /* PROJECTILES */
 
 #define MAX_PROJECTILES 100
@@ -93,8 +87,9 @@
 #define BITMAP_BUSH_ON_FIRE_PATH "bitmaps/bush1_on_fire.piko"
 #define BITMAP_BUSH_NO_BERRIES_PATH "bitmaps/bush1_no_berries.piko"
 #define BITMAP_BUSH_NO_BERRIES_ON_FIRE_PATH "bitmaps/bush1_no_berries_on_fire.piko"
+#define BITMAP_MAP_PATH "bitmaps/map.piko"
 
-#define BITMAPS_NUMBER 12
+#define BITMAPS_NUMBER 13
 
 /* TYPES */
 

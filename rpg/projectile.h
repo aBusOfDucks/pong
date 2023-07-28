@@ -6,7 +6,7 @@
 #include "entity.h"
 
 class projectile{
-public:
+protected:
 
     std::mutex mutex_position;
     coordinate position;
@@ -16,6 +16,17 @@ public:
     int type;
     int width, height;
     int bitmap_index;
+    int map_width, map_height;
+
+    void init(ALLEGRO_BITMAP ** bitmaps)
+    {
+        map_width = al_get_bitmap_width(bitmaps[BITMAP_MAP_INDEX]);
+        map_height = al_get_bitmap_height(bitmaps[BITMAP_MAP_INDEX]);
+        width = al_get_bitmap_width(bitmaps[bitmap_index]);
+        height = al_get_bitmap_height(bitmaps[bitmap_index]);
+    }
+
+public:
 
     projectile()
     {
@@ -51,7 +62,7 @@ public:
             return false;
         if(position.x < 0 || position.y < 0)
             return false;
-        if(position.x >= MAP_WIDTH || position.y >= MAP_HEIGHT)
+        if(position.x >= map_width || position.y >= map_height)
             return false;
         return true;
     }
@@ -88,6 +99,8 @@ public:
         this->width = other.width;
         this->height = other.height;
         this->bitmap_index = other.bitmap_index;
+        this->map_width = other.map_width;
+        this->map_height = other.map_height;
         return *this;
     }
 

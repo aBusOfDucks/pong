@@ -59,11 +59,6 @@ public:
             y = max_y;
     }
 
-    void trim()
-    {
-        trim(MAP_WIDTH, MAP_HEIGHT);
-    }
-
     void trim_bottom(double min_x, double min_y)
     {
         if(x < min_x)

@@ -44,11 +44,13 @@ private:
 
     ALLEGRO_BITMAP * bitmaps[BITMAPS_NUMBER];
 
+    int map_width, map_height;
+
     void move()
     {
         p->move(entities);
         camera_position = p->get_position() - coordinate(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-        camera_position.trim(MAP_WIDTH - WINDOW_WIDTH, MAP_HEIGHT - WINDOW_HEIGHT);
+        camera_position.trim(map_width - WINDOW_WIDTH, map_height - WINDOW_HEIGHT);
         camera_position.trim_bottom(0, 0);
     }
 
@@ -79,7 +81,8 @@ private:
 public:
     void draw()
     {
-        al_clear_to_color(MAP_COLOR);
+//        al_clear_to_color(MAP_COLOR);
+        al_draw_bitmap_region(bitmaps[BITMAP_MAP_INDEX], camera_position.x, camera_position.y, WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, 0);
         p->draw(camera_position, bitmaps);
         {
             std::unique_lock<std::mutex> lock(mutex_projectiles);
@@ -105,6 +108,9 @@ public:
     {
         load_bitmaps(bitmaps);
         p = new player(bitmaps);
+        map_width = al_get_bitmap_width(bitmaps[BITMAP_MAP_INDEX]);
+        map_height = al_get_bitmap_height(bitmaps[BITMAP_MAP_INDEX]);
+
         std::unique_lock<std::mutex> lock(mutex_projectiles);
         used_projectiles = 0;
         for(int i = 0; i < MAX_PROJECTILES; i++)
@@ -117,8 +123,8 @@ public:
         std::uniform_int_distribution<std::mt19937::result_type> entity_y_generator;
         std::uniform_int_distribution<std::mt19937::result_type> entity_type_generator;
 
-        entity_x_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_WIDTH);
-        entity_y_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, MAP_HEIGHT);
+        entity_x_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, map_width);
+        entity_y_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, map_height);
         entity_type_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, ENTITIES_NUMBER_OF_TYPES - 1);
         for(int i = 0; i < MAX_ENTITIES; i++)
         {

@@ -16,6 +16,7 @@ private:
     int direction_x;
     int direction_y;
     int width, height;
+    int map_width, map_height;
 
 public:
 
@@ -26,6 +27,8 @@ public:
         position.set(0, 0);
         width = al_get_bitmap_width(bitmaps[BITMAP_PLAYER_INDEX]);
         height = al_get_bitmap_height(bitmaps[BITMAP_PLAYER_INDEX]);
+        map_width = al_get_bitmap_width(bitmaps[BITMAP_MAP_INDEX]);
+        map_height = al_get_bitmap_height(bitmaps[BITMAP_MAP_INDEX]);
     }
     void move(entity ** entities)
     {
@@ -41,7 +44,7 @@ public:
                 i = MAX_ENTITIES;
             }
         }
-        position.trim(MAP_WIDTH - width, MAP_HEIGHT - height);
+        position.trim(map_width - width, map_height - height);
         position.trim_bottom(0, 0);
     }
 

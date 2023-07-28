@@ -18,6 +18,7 @@ protected:
     int bitmap_index;
     int width, height;
     int entity_type;
+    int map_width, map_height;
 
     void init(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
@@ -26,6 +27,8 @@ protected:
         height = al_get_bitmap_height(bitmaps[bitmap_index]);
         hitbox_start.set(x, y);
         hitbox_end.set(x + width, y + height);
+        map_width = al_get_bitmap_width(bitmaps[BITMAP_MAP_INDEX]);
+        map_height = al_get_bitmap_height(bitmaps[BITMAP_MAP_INDEX]);
     }
 
 public:
@@ -105,7 +108,7 @@ public:
     {
         if(position.x < 0 || position.y < 0)
             return false;
-        if(position.x + width >= MAP_WIDTH || position.y + height >= MAP_HEIGHT)
+        if(position.x + width >= map_width || position.y + height >= map_height)
             return false;
         return true;
     }
