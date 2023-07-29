@@ -12,7 +12,6 @@ public:
         bitmap_index = BITMAP_ROCK_INDEX;
         is_destroyed_by_magic = false;
         is_destroyed_by_fire = false;
-        can_player_pass = false;
         entity_type = ROCK_TYPE;
         entity::init(x, y, bitmaps);
     }

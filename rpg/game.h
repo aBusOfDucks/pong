@@ -48,7 +48,7 @@ private:
 
     void move()
     {
-        p->move(entities);
+        p->move(entities, p);
         camera_position = p->get_position() - coordinate(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
         camera_position.trim(map_width - WINDOW_WIDTH, map_height - WINDOW_HEIGHT);
         camera_position.trim_bottom(0, 0);
@@ -74,14 +74,13 @@ private:
         }
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
-            entities[i]->move(entities, p->get_hitbox_start(), p->get_hitbox_end());
+            entities[i]->move(entities, p);
         }
     }
 
 public:
     void draw()
     {
-//        al_clear_to_color(MAP_COLOR);
         al_draw_bitmap_region(bitmaps[BITMAP_MAP_INDEX], camera_position.x, camera_position.y, WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, 0);
         p->draw(camera_position, bitmaps);
         {

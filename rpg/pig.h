@@ -11,7 +11,6 @@ public:
         health_points = PIG_HEALTH;
         fire_damage = PIG_FIRE_DAMAGE;
         magic_damage = PIG_MAGIC_DAMAGE;
-        can_player_pass = false;
         entity_type = PIG_TYPE;
         entity::init(x, y, bitmaps);
     }

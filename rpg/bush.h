@@ -107,7 +107,7 @@ public:
         return ans;
     }
 
-    void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
+    void move(entity ** entities, entity * player)
     {
         if (exist)
         {
@@ -120,7 +120,7 @@ public:
                     berries_time_to_respawn--;
             }
         }
-        plant::move(entities, player_hitbox_start, player_hitbox_end);
+        plant::move(entities, player);
     }
 };
 

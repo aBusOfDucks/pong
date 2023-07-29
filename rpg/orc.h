@@ -11,33 +11,32 @@ public:
         health_points = ORC_HEALTH;
         fire_damage = ORC_FIRE_DAMAGE;
         magic_damage = ORC_MAGIC_DAMAGE;
-        can_player_pass = false;
         entity_type = ORC_TYPE;
         entity::init(x, y, bitmaps);
     }
-    void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
+    void move(entity ** entities, entity * player)
     {
         if(!exist)
             return;
         if(direction == ORC_DIRECTION_UP_RIGHT)
         {
-            move_in_direction(UP, entities, player_hitbox_start, player_hitbox_end);
-            move_in_direction(RIGHT, entities, player_hitbox_start, player_hitbox_end);
+            move_in_direction(UP, entities, player);
+            move_in_direction(RIGHT, entities, player);
         }
         if(direction == ORC_DIRECTION_DOWN_LEFT)
         {
-            move_in_direction(DOWN, entities, player_hitbox_start, player_hitbox_end);
-            move_in_direction(LEFT, entities, player_hitbox_start, player_hitbox_end);
+            move_in_direction(DOWN, entities, player);
+            move_in_direction(LEFT, entities, player);
         }
         if(direction == ORC_DIRECTION_UP_LEFT)
         {
-            move_in_direction(UP, entities, player_hitbox_start, player_hitbox_end);
-            move_in_direction(LEFT, entities, player_hitbox_start, player_hitbox_end);
+            move_in_direction(UP, entities, player);
+            move_in_direction(LEFT, entities, player);
         }
         if(direction == ORC_DIRECTION_DOWN_RIGHT)
         {
-            move_in_direction(DOWN, entities, player_hitbox_start, player_hitbox_end);
-            move_in_direction(RIGHT, entities, player_hitbox_start, player_hitbox_end);
+            move_in_direction(DOWN, entities, player);
+            move_in_direction(RIGHT, entities, player);
         }
         std::random_device dev;
         std::mt19937 rng;

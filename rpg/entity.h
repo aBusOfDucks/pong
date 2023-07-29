@@ -11,10 +11,9 @@
 class entity {
 protected:
     coordinate position;
-    bool can_player_pass;
     coordinate hitbox_end;
     coordinate hitbox_start;
-    bool exist = true;
+    bool exist;
     int bitmap_index;
     int width, height;
     int entity_type;
@@ -22,6 +21,7 @@ protected:
 
     void init(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
+        exist = true;
         position.set(x, y);
         width = al_get_bitmap_width(bitmaps[bitmap_index]);
         height = al_get_bitmap_height(bitmaps[bitmap_index]);
@@ -30,7 +30,11 @@ protected:
         map_width = al_get_bitmap_width(bitmaps[BITMAP_MAP_INDEX]);
         map_height = al_get_bitmap_height(bitmaps[BITMAP_MAP_INDEX]);
     }
-
+    void update_hitbox()
+    {
+        hitbox_start.set(position.x, position.y);
+        hitbox_end.set(position.x + width, position.y + height);
+    }
 public:
     int get_type()
     {
@@ -60,7 +64,7 @@ public:
         al_draw_bitmap(bitmaps[bitmap_index], draw_x, draw_y, 0);
     }
 
-    virtual bool entity_collide(entity * e)
+    bool entity_collide(entity * e)
     {
         if(!exist)
             return false;
@@ -70,8 +74,6 @@ public:
     virtual bool collide(coordinate left_upper, coordinate right_bottom, int type)
     {
         if(!exist)
-            return false;
-        if(type == PLAYER_TYPE && can_player_pass)
             return false;
 
         coordinate left_bottom(left_upper.x, right_bottom.y);
@@ -104,6 +106,18 @@ public:
     {
         exist = false;
     }
+
+    coordinate get_hitbox_start()
+    {
+        return position;
+    }
+
+    coordinate get_hitbox_end()
+    {
+        coordinate hitbox_end(position.x + width, position.y + height);
+        return hitbox_end;
+    }
+
     bool check_map_position()
     {
         if(position.x < 0 || position.y < 0)
@@ -113,7 +127,7 @@ public:
         return true;
     }
     virtual void hit_by(int type) = 0;
-    virtual void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end) = 0;
+    virtual void move(entity ** entities, entity * player) = 0;
 };
 
 #endif //__ENTITY_H__

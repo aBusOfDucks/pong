@@ -16,7 +16,7 @@ public:
         if(type == MAGIC_PROJECTILE_TYPE && is_destroyed_by_magic)
             kill();
     }
-    void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
+    void move(entity ** entities, entity * player)
     {
         return;
     }

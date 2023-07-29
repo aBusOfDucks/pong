@@ -15,7 +15,6 @@ protected:
     {
         is_destroyed_by_magic = false;
         is_destroyed_by_fire = true;
-        can_player_pass = false;
         is_on_fire = false;
         bitmap_default = bitmap_index;
         time_to_burn_default = time_to_burn;
@@ -45,7 +44,7 @@ public:
             }
         }
     }
-    virtual void move(entity ** entities, coordinate player_hitbox_start, coordinate player_hitbox_end)
+    void move(entity ** entities, entity * player) override
     {
         if (exist)
         {
@@ -54,7 +53,7 @@ public:
             if (is_on_fire)
                 time_to_burn--;
         }
-        obstacle::move(entities, player_hitbox_start, player_hitbox_end);
+        obstacle::move(entities, player);
     }
 };
 

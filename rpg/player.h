@@ -7,16 +7,18 @@
 #include <random>
 #include <queue>
 #include "entity.h"
+#include "enemy.h"
 
-class player{
-private:
+class player : public entity{
+protected:
 
-    std::mutex mutex_position;
-    coordinate position;
     int direction_x;
     int direction_y;
-    int width, height;
-    int map_width, map_height;
+
+    void teleport(int x, int y)
+    {
+        position.set(x, y);
+    }
 
 public:
 
@@ -24,21 +26,18 @@ public:
     {
         direction_x = 0;
         direction_y = 0;
-        position.set(0, 0);
-        width = al_get_bitmap_width(bitmaps[BITMAP_PLAYER_INDEX]);
-        height = al_get_bitmap_height(bitmaps[BITMAP_PLAYER_INDEX]);
-        map_width = al_get_bitmap_width(bitmaps[BITMAP_MAP_INDEX]);
-        map_height = al_get_bitmap_height(bitmaps[BITMAP_MAP_INDEX]);
+        bitmap_index = BITMAP_PLAYER_INDEX;
+        entity_type = PLAYER_TYPE;
+        entity::init(0, 0, bitmaps);
     }
-    void move(entity ** entities)
+
+    void move(entity ** entities, entity * player)
     {
-        std::unique_lock<std::mutex> lock(mutex_position);
         position.change(direction_x, direction_y);
-        coordinate hitbox_start(position.x, position.y);
-        coordinate hitbox_end(position.x + width, position.y + height);
+        update_hitbox();
         for(int i = 0; i < MAX_ENTITIES; i++)
         {
-            if(entities[i]->collide(hitbox_start, hitbox_end, PLAYER_TYPE))
+            if(entity_collide(entities[i]))
             {
                 position.change(-direction_x, -direction_y);
                 i = MAX_ENTITIES;
@@ -46,11 +45,11 @@ public:
         }
         position.trim(map_width - width, map_height - height);
         position.trim_bottom(0, 0);
+        update_hitbox();
     }
 
     void change_direction(int dx, int dy)
     {
-        std::unique_lock<std::mutex> lock(mutex_position);
         direction_x += dx;
         direction_y += dy;
         if(direction_x > 1)
@@ -63,36 +62,37 @@ public:
             direction_y = -1;
     }
 
-    coordinate get_hitbox_start()
+    bool entity_collide(entity * e)
     {
-        std::unique_lock<std::mutex> lock(mutex_position);
-        return position;
+        bool ans = entity::entity_collide(e);
+        if (ans)
+        {
+            if (e->get_type() == ORC_TYPE)
+                teleport(0, 0);
+        }
+        return ans;
     }
 
-    coordinate get_hitbox_end()
+    bool collide(coordinate left_upper, coordinate right_bottom, int type)
     {
-        std::unique_lock<std::mutex> lock(mutex_position);
-        coordinate hitbox_end(position.x + width, position.y + height);
-        return hitbox_end;
+        bool ans = entity::collide(left_upper, right_bottom, type);
+        if (ans)
+        {
+            if (type == ORC_TYPE)
+                teleport(0, 0);
+        }
+        return ans;
     }
 
     coordinate get_position()
     {
-        std::unique_lock<std::mutex> lock(mutex_position);
         return position;
     }
 
-    void draw(coordinate camera, ALLEGRO_BITMAP ** bitmaps)
+    void hit_by(int type)
     {
-        if(position.x < camera.x || position.y < camera.y)
-            return;
-        if(position.x >= camera.x + WINDOW_WIDTH || position.y >= camera.y + WINDOW_HEIGHT)
-            return;
-        int draw_x = position.x - camera.x;
-        int draw_y = position.y - camera.y;
-        al_draw_bitmap(bitmaps[BITMAP_PLAYER_INDEX], draw_x, draw_y, 0);
+        return;
     }
-
 };
 
 #endif /* __PLAYER_H__ */
