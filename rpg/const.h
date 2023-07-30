@@ -88,8 +88,10 @@
 #define BITMAP_BUSH_NO_BERRIES_PATH "bitmaps/bush1_no_berries.piko"
 #define BITMAP_BUSH_NO_BERRIES_ON_FIRE_PATH "bitmaps/bush1_no_berries_on_fire.piko"
 #define BITMAP_MAP_PATH "bitmaps/map.piko"
+#define BITMAP_ENTITY_BAN_MAP_PATH "bitmaps/entity_ban_map.piko"
+#define BITMAP_ORC_BAN_MAP_PATH "bitmaps/orc_ban_map.piko"
 
-#define BITMAPS_NUMBER 13
+#define BITMAPS_NUMBER 15
 
 /* TYPES */
 

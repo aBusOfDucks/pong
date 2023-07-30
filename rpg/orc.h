@@ -5,6 +5,21 @@
 
 class orc : public enemy {
 public:
+
+    bool check_map_position(ALLEGRO_BITMAP ** bitmaps)
+    {
+        if(check_ban(bitmaps, BITMAP_ORC_BAN_MAP_INDEX, hitbox_start.x, hitbox_start.y))
+            return false;
+        if(check_ban(bitmaps, BITMAP_ORC_BAN_MAP_INDEX, hitbox_start.x, hitbox_end.y))
+            return false;
+        if(check_ban(bitmaps, BITMAP_ORC_BAN_MAP_INDEX, hitbox_end.x, hitbox_start.y))
+            return false;
+        if(check_ban(bitmaps, BITMAP_ORC_BAN_MAP_INDEX, hitbox_end.x, hitbox_end.y))
+            return false;
+
+        return entity::check_map_position(bitmaps);
+    }
+
     orc(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
         bitmap_index = BITMAP_ORC_INDEX;

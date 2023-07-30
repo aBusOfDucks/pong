@@ -152,7 +152,7 @@ public:
             entity_slot_used[i] = true;
             for(int j = 0; j < i; j++)
             {
-                if(entities[i]->entity_collide(entities[j]) || !entities[i]->check_map_position())
+                if(entities[i]->entity_collide(entities[j]) || !entities[i]->check_map_position(bitmaps))
                 {
                     used_entities--;
                     j = i;

@@ -3,6 +3,7 @@
 
 #include <allegro5/allegro5.h>
 #include "const.h"
+#include <iostream>
 
 #define BITMAP_PLAYER_INDEX 0
 #define BITMAP_ORC_INDEX 1
@@ -17,6 +18,18 @@
 #define BITMAP_BUSH_NO_BERRIES_INDEX 10
 #define BITMAP_BUSH_NO_BERRIES_ON_FIRE_INDEX 11
 #define BITMAP_MAP_INDEX 12
+#define BITMAP_ENTITY_BAN_MAP_INDEX 13
+#define BITMAP_ORC_BAN_MAP_INDEX 14
+
+bool check_ban(ALLEGRO_BITMAP ** bitmaps, int index, int x, int y)
+{
+    ALLEGRO_COLOR px = al_get_pixel(bitmaps[index], x, y);
+    unsigned char r, g, b;
+    al_unmap_rgb(px, &r, &g, &b);
+    if(g == 0)
+        return true;
+    return false;
+}
 
 void load_bitmaps(ALLEGRO_BITMAP ** bitmaps)
 {
@@ -33,6 +46,8 @@ void load_bitmaps(ALLEGRO_BITMAP ** bitmaps)
     bitmaps[10] = al_load_bitmap(BITMAP_BUSH_NO_BERRIES_PATH);
     bitmaps[11] = al_load_bitmap(BITMAP_BUSH_NO_BERRIES_ON_FIRE_PATH);
     bitmaps[12] = al_load_bitmap(BITMAP_MAP_PATH);
+    bitmaps[13] = al_load_bitmap(BITMAP_ENTITY_BAN_MAP_PATH);
+    bitmaps[14] = al_load_bitmap(BITMAP_ORC_BAN_MAP_PATH);
 }
 
 #endif //RPG_BITMAPS_H

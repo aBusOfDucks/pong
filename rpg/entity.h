@@ -118,12 +118,22 @@ public:
         return hitbox_end;
     }
 
-    bool check_map_position()
+    virtual bool check_map_position(ALLEGRO_BITMAP ** bitmaps)
     {
         if(position.x < 0 || position.y < 0)
             return false;
         if(position.x + width >= map_width || position.y + height >= map_height)
             return false;
+
+        if(check_ban(bitmaps, BITMAP_ENTITY_BAN_MAP_INDEX, hitbox_start.x, hitbox_start.y))
+            return false;
+        if(check_ban(bitmaps, BITMAP_ENTITY_BAN_MAP_INDEX, hitbox_start.x, hitbox_end.y))
+            return false;
+        if(check_ban(bitmaps, BITMAP_ENTITY_BAN_MAP_INDEX, hitbox_end.x, hitbox_start.y))
+            return false;
+        if(check_ban(bitmaps, BITMAP_ENTITY_BAN_MAP_INDEX, hitbox_end.x, hitbox_end.y))
+            return false;
+
         return true;
     }
     virtual void hit_by(int type) = 0;
