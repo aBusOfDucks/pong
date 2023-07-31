@@ -64,7 +64,7 @@ public:
         al_draw_bitmap(bitmaps[bitmap_index], draw_x, draw_y, 0);
     }
 
-    bool entity_collide(entity * e)
+    virtual bool entity_collide(entity * e)
     {
         if(!exist)
             return false;

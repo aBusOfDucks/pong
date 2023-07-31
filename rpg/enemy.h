@@ -7,10 +7,24 @@
 class enemy : public entity {
 protected:
     int health_points;
+    int max_health;
     int fire_damage;
     int magic_damage;
     ALLEGRO_COLOR color;
     int direction = NONE;
+
+    void heal(int points)
+    {
+        health_points += points;
+        if(health_points > max_health)
+            health_points = max_health;
+    }
+
+    void init(double x, double y, ALLEGRO_BITMAP ** bitmaps)
+    {
+        health_points = max_health;
+        entity::init(x, y, bitmaps);
+    }
     bool check_position(entity ** entities, entity * player)
     {
         int number_of_collisions = 0;

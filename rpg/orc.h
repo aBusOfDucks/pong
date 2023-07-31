@@ -23,11 +23,11 @@ public:
     orc(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
         bitmap_index = BITMAP_ORC_INDEX;
-        health_points = ORC_HEALTH;
+        max_health = ORC_HEALTH;
         fire_damage = ORC_FIRE_DAMAGE;
         magic_damage = ORC_MAGIC_DAMAGE;
         entity_type = ORC_TYPE;
-        entity::init(x, y, bitmaps);
+        enemy::init(x, y, bitmaps);
     }
     void move(entity ** entities, entity * player)
     {

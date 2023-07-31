@@ -92,7 +92,7 @@ public:
         bool ans = entity::entity_collide(e);
         std::unique_lock<std::mutex> lock(mutex_berries);
         if(ans)
-            if(e->get_type() == PIG_TYPE|| e->get_type() == PLAYER_TYPE)
+            if(e->get_type() == PIG_TYPE || e->get_type() == PLAYER_TYPE)
                 loose_berries();
         return ans;
     }
