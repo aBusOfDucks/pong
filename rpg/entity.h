@@ -36,6 +36,12 @@ protected:
         hitbox_end.set(position.x + width, position.y + height);
     }
 public:
+
+    virtual int entity_interaction(int code)
+    {
+        return ENTITY_ANS_NONE;
+    }
+
     int get_type()
     {
         return entity_type;

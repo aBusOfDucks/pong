@@ -4,7 +4,20 @@
 #include "enemy.h"
 
 class pig : public enemy {
+private:
+    void eat_berry()
+    {
+        heal(PIG_BERRIES_HEAL);
+    }
 public:
+
+    int entity_interaction(int code) override
+    {
+        if(code == ENTITY_CODE_EAT_BERRIES)
+            eat_berry();
+        return ENTITY_ANS_NONE;
+    }
+
     pig(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
         bitmap_index = BITMAP_PIG_INDEX;
@@ -14,21 +27,20 @@ public:
         entity_type = PIG_TYPE;
         enemy::init(x, y, bitmaps);
     }
+
     bool entity_collide(entity * e) override
     {
+        bool has_berries = false;
+        if(e->get_type() == BUSH_TYPE)
+        {
+            if(e->entity_interaction(ENTITY_CODE_DOES_HAVE_BERRIES) == ENTITY_ANS_HAS_BERRIES)
+            {
+                has_berries = true;
+            }
+        }
         bool ans = entity::entity_collide(e);
-        if(ans)
-            if(e->get_type() == BUSH_TYPE)
-                heal(PIG_BERRIES_HEAL);
-        return ans;
-    }
-
-    bool collide(coordinate left_upper, coordinate right_bottom, int type) override
-    {
-        bool ans = entity::collide(left_upper, right_bottom, type);
-        if(ans)
-            if(type == BUSH_TYPE)
-                heal(PIG_BERRIES_HEAL);
+        if(ans && has_berries)
+            eat_berry();
         return ans;
     }
 };

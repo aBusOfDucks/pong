@@ -42,6 +42,19 @@ private:
     }
 public:
 
+    int entity_interaction(int code) override
+    {
+        if(code == ENTITY_CODE_DOES_HAVE_BERRIES)
+        {
+            std::unique_lock<std::mutex> lock(mutex_berries);
+            if(has_berries)
+                return ENTITY_ANS_HAS_BERRIES;
+            else
+                return ENTITY_ANS_DOES_NOT_HAVE_BERRIES;
+        }
+        return ENTITY_ANS_NONE;
+    }
+
     bush(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
         bitmap_index = BITMAP_BUSH_INDEX;
@@ -87,27 +100,45 @@ public:
         }
     }
 
-    bool entity_collide(entity * e)
+    bool entity_collide(entity * e) override
     {
         bool ans = entity::entity_collide(e);
         std::unique_lock<std::mutex> lock(mutex_berries);
         if(ans)
-            if(e->get_type() == PIG_TYPE || e->get_type() == PLAYER_TYPE)
+            if(e->get_type() == PLAYER_TYPE)
                 loose_berries();
+        if(ans)
+        {
+            if(e->get_type() == PIG_TYPE)
+            {
+                if(has_berries)
+                    e->entity_interaction(ENTITY_CODE_EAT_BERRIES);
+                loose_berries();
+            }
+        }
         return ans;
     }
 
-    bool collide(coordinate left_upper, coordinate right_bottom, int type)
+    bool collide(coordinate left_upper, coordinate right_bottom, int type) override
     {
         bool ans = entity::collide(left_upper, right_bottom, type);
         std::unique_lock<std::mutex> lock(mutex_berries);
         if(ans)
-            if(type == PIG_TYPE || type == PLAYER_TYPE)
+            if(type == PIG_TYPE)
+            {
                 loose_berries();
+            }
+        if(ans)
+        {
+            if(type == PLAYER_TYPE)
+            {
+                loose_berries();
+            }
+        }
         return ans;
     }
 
-    void move(entity ** entities, entity * player)
+    void move(entity ** entities, entity * player) override
     {
         if (exist)
         {

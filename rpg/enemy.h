@@ -18,6 +18,7 @@ protected:
         health_points += points;
         if(health_points > max_health)
             health_points = max_health;
+        std::cout << health_points << "\n";
     }
 
     void init(double x, double y, ALLEGRO_BITMAP ** bitmaps)
