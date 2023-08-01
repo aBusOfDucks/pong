@@ -20,6 +20,8 @@
 #define BITMAP_MAP_INDEX 12
 #define BITMAP_ENTITY_BAN_MAP_INDEX 13
 #define BITMAP_ORC_BAN_MAP_INDEX 14
+#define BITMAP_PLAYER_WITH_MAGIC_WAND_INDEX 15
+#define BITMAP_PLAYER_WITH_FIRE_WAND_INDEX 16
 
 bool check_ban(ALLEGRO_BITMAP ** bitmaps, int index, int x, int y)
 {
@@ -48,6 +50,8 @@ void load_bitmaps(ALLEGRO_BITMAP ** bitmaps)
     bitmaps[12] = al_load_bitmap(BITMAP_MAP_PATH);
     bitmaps[13] = al_load_bitmap(BITMAP_ENTITY_BAN_MAP_PATH);
     bitmaps[14] = al_load_bitmap(BITMAP_ORC_BAN_MAP_PATH);
+    bitmaps[15] = al_load_bitmap(BITMAP_PLAYER_WITH_MAGIC_WAND_PATH);
+    bitmaps[16] = al_load_bitmap(BITMAP_PLAYER_WITH_FIRE_WAND_PATH);
 }
 
 #endif //RPG_BITMAPS_H

@@ -35,8 +35,6 @@ private:
 
     std::mutex mutex_projectiles;
     projectile projectiles[MAX_PROJECTILES];
-    bool projectile_slot_used[MAX_PROJECTILES];
-    int used_projectiles = 0;
 
     entity * entities[MAX_ENTITIES];
     bool entity_slot_used[MAX_ENTITIES];
@@ -61,13 +59,12 @@ private:
             std::unique_lock <std::mutex> lock(mutex_projectiles);
             for (int i = 0; i < MAX_PROJECTILES; i++)
             {
-                if (projectile_slot_used[i])
+                if (projectiles[i].does_exist())
                 {
                     projectiles[i].move(entities);
                     if (!projectiles[i].check())
                     {
-                        projectile_slot_used[i] = false;
-                        used_projectiles--;
+                        projectiles[i].destroy();
                     }
                 }
             }
@@ -87,7 +84,7 @@ public:
             std::unique_lock<std::mutex> lock(mutex_projectiles);
             for (int i = 0; i < MAX_PROJECTILES; i++)
             {
-                if (projectile_slot_used[i])
+                if (projectiles[i].does_exist())
                 {
                     projectiles[i].draw(camera_position, bitmaps);
                 }
@@ -103,6 +100,11 @@ public:
         al_flip_display();
     }
 
+    void player_change_weapon(int num)
+    {
+        p->change_weapon(num);
+    }
+
     void set()
     {
         load_bitmaps(bitmaps);
@@ -110,10 +112,8 @@ public:
         map_width = al_get_bitmap_width(bitmaps[BITMAP_MAP_INDEX]);
         map_height = al_get_bitmap_height(bitmaps[BITMAP_MAP_INDEX]);
 
-        std::unique_lock<std::mutex> lock(mutex_projectiles);
-        used_projectiles = 0;
         for(int i = 0; i < MAX_PROJECTILES; i++)
-            projectile_slot_used[i] = false;
+            projectiles[i].destroy();
 
         std::random_device dev;
         std::mt19937 rng;
@@ -223,35 +223,10 @@ public:
         }
     }
 
-    void click(int x, int y, int type)
+    void click(int x, int y, int mode)
     {
         std::unique_lock<std::mutex> lock(mutex_projectiles);
-        if(used_projectiles < MAX_PROJECTILES)
-        {
-            for(int i = 0; i < MAX_PROJECTILES; i++)
-                if(!projectile_slot_used[i])
-                {
-                    projectile_slot_used[i] = true;
-                    int poz_x = p->get_position().x;
-                    int poz_y = p->get_position().y;
-                    double dx = x + camera_position.x - poz_x;
-                    double dy = y + camera_position.y - poz_y;
-                    if(type == MAGIC_ATTACK)
-                    {
-                        magic_projectile mp(bitmaps);
-                        mp.set(poz_x, poz_y, dx, dy);
-                        projectiles[i] = mp;
-                    }
-                    if(type == FIRE_ATTACK)
-                    {
-                        fire_projectile fp(bitmaps);
-                        fp.set(poz_x, poz_y, dx, dy);
-                        projectiles[i] = fp;
-                    }
-                    used_projectiles++;
-                    i = MAX_PROJECTILES;
-                }
-        }
+        p->use_weapon(x, y, mode, projectiles, camera_position);
     }
 };
 

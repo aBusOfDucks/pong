@@ -18,6 +18,7 @@ protected:
     int width, height;
     int entity_type;
     int map_width, map_height;
+    ALLEGRO_BITMAP ** bitmaps;
 
     void init(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
@@ -29,6 +30,7 @@ protected:
         hitbox_end.set(x + width, y + height);
         map_width = al_get_bitmap_width(bitmaps[BITMAP_MAP_INDEX]);
         map_height = al_get_bitmap_height(bitmaps[BITMAP_MAP_INDEX]);
+        this->bitmaps = bitmaps;
     }
     void update_hitbox()
     {

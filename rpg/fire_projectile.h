@@ -27,6 +27,17 @@ public:
         projectile::init(bitmaps);
     }
 
+    fire_projectile(int x, int y, int dx, int dy, ALLEGRO_BITMAP ** bitmaps)
+    {
+        speed = FIRE_PROJECTILE_SPEED;
+        range = FIRE_PROJECTILE_RANGE;
+        type = FIRE_PROJECTILE_TYPE;
+        bitmap_index = BITMAP_FIRE_PROJECTILE_INDEX;
+        set(x, y, dx, dy);
+        projectile::init(bitmaps);
+
+    }
+
 };
 
 #endif //__FIRE_PROJECTILE_H__

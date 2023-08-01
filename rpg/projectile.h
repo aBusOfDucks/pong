@@ -17,9 +17,11 @@ protected:
     int width, height;
     int bitmap_index;
     int map_width, map_height;
+    bool exist = false;
 
     void init(ALLEGRO_BITMAP ** bitmaps)
     {
+        exist = true;
         map_width = al_get_bitmap_width(bitmaps[BITMAP_MAP_INDEX]);
         map_height = al_get_bitmap_height(bitmaps[BITMAP_MAP_INDEX]);
         width = al_get_bitmap_width(bitmaps[bitmap_index]);
@@ -58,6 +60,8 @@ public:
 
     bool check()
     {
+        if(!exist)
+            return false;
         if (range <= 0)
             return false;
         if(position.x < 0 || position.y < 0)
@@ -69,6 +73,8 @@ public:
 
     void draw(coordinate camera, ALLEGRO_BITMAP ** bitmaps)
     {
+        if(!exist)
+            return;
         if(position.x < camera.x || position.y < camera.y)
             return;
         if(position.x >= camera.x + WINDOW_WIDTH || position.y >= camera.y + WINDOW_HEIGHT)
@@ -78,14 +84,22 @@ public:
         al_draw_bitmap(bitmaps[bitmap_index], draw_x, draw_y, 0);
     }
 
+    bool does_exist()
+    {
+        return exist;
+    }
+
     const void set(int new_x, int new_y, double new_dx, double new_dy)
     {
         position.set(new_x, new_y);
         dx = new_dx;
         dy = new_dy;
         double dis = sqrt(dx * dx + dy * dy);
-        dx *= speed / dis;
-        dy *= speed / dis;
+        if(dis > 0)
+        {
+            dx *= speed / dis;
+            dy *= speed / dis;
+        }
     }
 
     projectile& operator=(projectile & other)
@@ -101,12 +115,14 @@ public:
         this->bitmap_index = other.bitmap_index;
         this->map_width = other.map_width;
         this->map_height = other.map_height;
+        this->exist = other.exist;
         return *this;
     }
 
     void destroy()
     {
         range = 0;
+        exist = false;
     }
 };
 

@@ -56,8 +56,16 @@ void player_input_manager(game & g)
                         g.change_direction(RIGHT);
                         break;
 
-                    case ALLEGRO_KEY_R:
-                        // TODO
+                    case ALLEGRO_KEY_1:
+                        g.player_change_weapon(1);
+                        break;
+
+                    case ALLEGRO_KEY_2:
+                        g.player_change_weapon(2);
+                        break;
+
+                    case ALLEGRO_KEY_3:
+                        g.player_change_weapon(3);
                         break;
 
                     case ALLEGRO_KEY_TAB:

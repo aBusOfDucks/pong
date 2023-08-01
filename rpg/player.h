@@ -6,11 +6,16 @@
 #include <condition_variable>
 #include <random>
 #include <queue>
-#include "entity.h"
 #include "enemy.h"
+#include "magic_wand.h"
+#include "fire_wand.h"
+#include "no_weapon.h"
 
 class player : public entity{
 protected:
+
+    weapon * weapons[WEAPONS_NUMBER];
+    int current_weapon;
 
     int direction_x;
     int direction_y;
@@ -18,6 +23,13 @@ protected:
     void teleport(int x, int y)
     {
         position.set(x, y);
+    }
+
+    void set_weapons()
+    {
+        weapons[0] = new no_weapon(bitmaps);
+        weapons[1] = new magic_wand(bitmaps);
+        weapons[2] = new fire_wand(bitmaps);
     }
 
 public:
@@ -29,6 +41,8 @@ public:
         bitmap_index = BITMAP_PLAYER_INDEX;
         entity_type = PLAYER_TYPE;
         entity::init(0, 0, bitmaps);
+        current_weapon = 0;
+        set_weapons();
     }
 
     void move(entity ** entities, entity * player)
@@ -92,6 +106,31 @@ public:
     void hit_by(int type)
     {
         return;
+    }
+
+    void change_weapon(int number)
+    {
+        current_weapon = number - 1;
+        if(number == 1)
+            bitmap_index = BITMAP_PLAYER_INDEX;
+        if(number == 2)
+            bitmap_index = BITMAP_PLAYER_WITH_MAGIC_WAND_INDEX;
+        if(number == 3)
+            bitmap_index = BITMAP_PLAYER_WITH_FIRE_WAND_INDEX;
+    }
+
+    void use_weapon(int mouse_x, int mouse_y, int mode, projectile * projectiles, coordinate camera)
+    {
+        for(int i = 0; i < MAX_PROJECTILES; i++)
+        {
+            if(!projectiles[i].does_exist())
+            {
+                double dx = mouse_x + camera.x - position.x;
+                double dy = mouse_y + camera.y - position.y;
+                weapons[current_weapon]->attack(position.x, position.y, dx, dy, mode, &(projectiles[i]));
+                return;
+            }
+        }
     }
 };
 

@@ -82,6 +82,8 @@
 #define NONE 4
 #define DIRECTIONS_NUMBER 5
 
+#define WEAPONS_NUMBER 3
+
 /* BITMAPS */
 
 #define BITMAP_PLAYER_PATH "bitmaps/player.piko"
@@ -99,8 +101,10 @@
 #define BITMAP_MAP_PATH "bitmaps/map.piko"
 #define BITMAP_ENTITY_BAN_MAP_PATH "bitmaps/entity_ban_map.piko"
 #define BITMAP_ORC_BAN_MAP_PATH "bitmaps/orc_ban_map.piko"
+#define BITMAP_PLAYER_WITH_MAGIC_WAND_PATH "bitmaps/player_with_magic_wand.piko"
+#define BITMAP_PLAYER_WITH_FIRE_WAND_PATH "bitmaps/player_with_fire_wand.piko"
 
-#define BITMAPS_NUMBER 15
+#define BITMAPS_NUMBER 17
 
 /* TYPES */
 

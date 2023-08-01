@@ -26,6 +26,16 @@ public:
         bitmap_index = BITMAP_MAGIC_PROJECTILE_INDEX;
         projectile::init(bitmaps);
     }
+    magic_projectile(int x, int y, int dx, int dy, ALLEGRO_BITMAP ** bitmaps)
+    {
+        speed = MAGIC_PROJECTILE_SPEED;
+        range = MAGIC_PROJECTILE_RANGE;
+        type = MAGIC_PROJECTILE_TYPE;
+        bitmap_index = BITMAP_MAGIC_PROJECTILE_INDEX;
+        set(x, y, dx, dy);
+        projectile::init(bitmaps);
+
+    }
 
 };
 
