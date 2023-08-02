@@ -6,18 +6,12 @@
 class orc : public enemy {
 public:
 
-    bool check_map_position(ALLEGRO_BITMAP ** bitmaps)
+    bool check_map_position()
     {
-        if(check_ban(bitmaps, BITMAP_ORC_BAN_MAP_INDEX, hitbox_start.x, hitbox_start.y))
-            return false;
-        if(check_ban(bitmaps, BITMAP_ORC_BAN_MAP_INDEX, hitbox_start.x, hitbox_end.y))
-            return false;
-        if(check_ban(bitmaps, BITMAP_ORC_BAN_MAP_INDEX, hitbox_end.x, hitbox_start.y))
-            return false;
-        if(check_ban(bitmaps, BITMAP_ORC_BAN_MAP_INDEX, hitbox_end.x, hitbox_end.y))
+        if(check_ban_map(BITMAP_ORC_BAN_MAP_INDEX))
             return false;
 
-        return entity::check_map_position(bitmaps);
+        return entity::check_map_position();
     }
 
     orc(double x, double y, ALLEGRO_BITMAP ** bitmaps)
@@ -29,6 +23,7 @@ public:
         entity_type = ORC_TYPE;
         enemy::init(x, y, bitmaps);
     }
+
     void move(entity ** entities, entity * player)
     {
         if(!exist)

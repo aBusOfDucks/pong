@@ -20,6 +20,7 @@ protected:
             health_points = max_health;
     }
 
+
     void init(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
         health_points = max_health;
@@ -40,6 +41,8 @@ protected:
         if(number_of_collisions > 1)
             return false;
         if(entity_collide(player))
+            return false;
+        if(check_ban_map(BITMAP_WATER_MAP_INDEX))
             return false;
         return true;
     }
@@ -69,7 +72,16 @@ protected:
         }
     }
 public:
-    void hit_by(int type)
+
+    bool check_map_position() override
+    {
+        if(check_ban_map(BITMAP_WATER_MAP_INDEX))
+            return false;
+
+        return entity::check_map_position();
+    }
+
+    void hit_by(int type) override
     {
         if(type == FIRE_PROJECTILE_TYPE)
         {
@@ -82,7 +94,7 @@ public:
         if(health_points <= 0)
             kill();
     }
-    void move(entity ** entities, entity * player)
+    void move(entity ** entities, entity * player) override
     {
         if(!exist)
             return;

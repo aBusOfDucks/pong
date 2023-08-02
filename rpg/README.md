@@ -3,8 +3,8 @@ Simple rpg game using c++ Allegro library (https://github.com/liballeg/allegro5)
 
 - Press 'W', 'S' 'A' and 'D' to move;
 
-- Click anywhere to use weapon;
+- Right click anywhere to shoot fire projectile;
 
-- Press '1', '2' or '3' to select weapon: '1' - no weapon (default), '2' - magic wand, '3' - fire wand;
+- Left click anywhere to shoot magic projectile;
 
 - Press Esc to quit.

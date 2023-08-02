@@ -103,8 +103,12 @@
 #define BITMAP_ORC_BAN_MAP_PATH "bitmaps/orc_ban_map.piko"
 #define BITMAP_PLAYER_WITH_MAGIC_WAND_PATH "bitmaps/player_with_magic_wand.piko"
 #define BITMAP_PLAYER_WITH_FIRE_WAND_PATH "bitmaps/player_with_fire_wand.piko"
+#define BITMAP_WATER_MAP_PATH "bitmaps/water_map.piko"
+#define BITMAP_PLANT_BAN_MAP_PATH "bitmaps/plant_ban_map.piko"
+#define BITMAP_ROCK_BAN_MAP_PATH "bitmaps/rock_ban_map.piko"
 
-#define BITMAPS_NUMBER 17
+
+#define BITMAPS_NUMBER 20
 
 /* TYPES */
 

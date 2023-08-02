@@ -15,6 +15,15 @@ public:
         entity_type = ROCK_TYPE;
         entity::init(x, y, bitmaps);
     }
+
+    bool check_map_position()
+    {
+        if(check_ban_map(BITMAP_ROCK_BAN_MAP_INDEX))
+            return false;
+
+        return entity::check_map_position();
+    }
+
     bool entity_collide(entity * e)
     {
         bool ans = entity::entity_collide(e);

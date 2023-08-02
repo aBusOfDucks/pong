@@ -37,6 +37,20 @@ protected:
         hitbox_start.set(position.x, position.y);
         hitbox_end.set(position.x + width, position.y + height);
     }
+
+    bool check_ban_map(int index)
+    {
+        if(check_ban(bitmaps, index, hitbox_start.x, hitbox_start.y))
+            return true;
+        if(check_ban(bitmaps, index, hitbox_start.x, hitbox_end.y))
+            return true;
+        if(check_ban(bitmaps, index, hitbox_end.x, hitbox_start.y))
+            return true;
+        if(check_ban(bitmaps, index, hitbox_end.x, hitbox_end.y))
+            return true;
+        return false;
+    }
+
 public:
 
     virtual int entity_interaction(int code)
@@ -126,20 +140,14 @@ public:
         return hitbox_end;
     }
 
-    virtual bool check_map_position(ALLEGRO_BITMAP ** bitmaps)
+    virtual bool check_map_position()
     {
         if(position.x < 0 || position.y < 0)
             return false;
         if(position.x + width >= map_width || position.y + height >= map_height)
             return false;
 
-        if(check_ban(bitmaps, BITMAP_ENTITY_BAN_MAP_INDEX, hitbox_start.x, hitbox_start.y))
-            return false;
-        if(check_ban(bitmaps, BITMAP_ENTITY_BAN_MAP_INDEX, hitbox_start.x, hitbox_end.y))
-            return false;
-        if(check_ban(bitmaps, BITMAP_ENTITY_BAN_MAP_INDEX, hitbox_end.x, hitbox_start.y))
-            return false;
-        if(check_ban(bitmaps, BITMAP_ENTITY_BAN_MAP_INDEX, hitbox_end.x, hitbox_end.y))
+        if(check_ban_map(BITMAP_ENTITY_BAN_MAP_INDEX))
             return false;
 
         return true;

@@ -49,12 +49,19 @@ public:
     {
         position.change(direction_x, direction_y);
         update_hitbox();
-        for(int i = 0; i < MAX_ENTITIES; i++)
+        if(check_ban_map(BITMAP_WATER_MAP_INDEX))
         {
-            if(entity_collide(entities[i]))
+            position.change(-direction_x, -direction_y);
+        }
+        else
+        {
+            for (int i = 0; i < MAX_ENTITIES; i++)
             {
-                position.change(-direction_x, -direction_y);
-                i = MAX_ENTITIES;
+                if (entity_collide(entities[i]))
+                {
+                    position.change(-direction_x, -direction_y);
+                    i = MAX_ENTITIES;
+                }
             }
         }
         position.trim(map_width - width, map_height - height);

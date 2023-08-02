@@ -22,6 +22,16 @@ protected:
     }
 
 public:
+
+    bool check_map_position() override
+    {
+
+        if(check_ban_map(BITMAP_PLANT_BAN_MAP_INDEX))
+            return false;
+
+        return entity::check_map_position();
+    }
+
     virtual void hit_by(int type) override
     {
         if(type == FIRE_PROJECTILE_TYPE)

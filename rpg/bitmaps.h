@@ -22,11 +22,20 @@
 #define BITMAP_ORC_BAN_MAP_INDEX 14
 #define BITMAP_PLAYER_WITH_MAGIC_WAND_INDEX 15
 #define BITMAP_PLAYER_WITH_FIRE_WAND_INDEX 16
+#define BITMAP_WATER_MAP_INDEX 17
+#define BITMAP_PLANT_BAN_MAP_INDEX 18
+#define BITMAP_ROCK_BAN_MAP_INDEX 19
 
 bool check_ban(ALLEGRO_BITMAP ** bitmaps, int index, int x, int y)
 {
+    if(x < 0 || y < 0)
+        return false;
+    if(x >= al_get_bitmap_width(bitmaps[index]))
+        return false;
+    if(y >= al_get_bitmap_height(bitmaps[index]))
+        return false;
     ALLEGRO_COLOR px = al_get_pixel(bitmaps[index], x, y);
-    unsigned char r, g, b;
+    unsigned char r = 0, g = 0, b = 0;
     al_unmap_rgb(px, &r, &g, &b);
     if(g == 0)
         return true;
@@ -52,6 +61,14 @@ void load_bitmaps(ALLEGRO_BITMAP ** bitmaps)
     bitmaps[14] = al_load_bitmap(BITMAP_ORC_BAN_MAP_PATH);
     bitmaps[15] = al_load_bitmap(BITMAP_PLAYER_WITH_MAGIC_WAND_PATH);
     bitmaps[16] = al_load_bitmap(BITMAP_PLAYER_WITH_FIRE_WAND_PATH);
+    bitmaps[17] = al_load_bitmap(BITMAP_WATER_MAP_PATH);
+    bitmaps[18] = al_load_bitmap(BITMAP_PLANT_BAN_MAP_PATH);
+    bitmaps[19] = al_load_bitmap(BITMAP_ROCK_BAN_MAP_PATH);
+
+    for(int i = 0; i < BITMAPS_NUMBER; i++)
+    {
+        al_lock_bitmap(bitmaps[i], ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READONLY);
+    }
 }
 
 #endif //RPG_BITMAPS_H
