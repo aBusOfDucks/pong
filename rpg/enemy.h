@@ -12,6 +12,9 @@ protected:
     int magic_damage;
     ALLEGRO_COLOR color;
     int direction = NONE;
+    double dx, dy;
+    double speed;
+    int chance_to_change_direction;
 
     void heal(int points)
     {
@@ -23,6 +26,8 @@ protected:
 
     void init(double x, double y, ALLEGRO_BITMAP ** bitmaps)
     {
+        dx = 0;
+        dy = 0;
         health_points = max_health;
         entity::init(x, y, bitmaps);
     }
@@ -49,28 +54,35 @@ protected:
 
     void move_in_direction(int dir, entity ** entities, entity * player)
     {
-        if(dir == UP)
-            position.y--;
-        if(dir == DOWN)
-            position.y++;
-        if(dir == LEFT)
-            position.x--;
-        if(dir == RIGHT)
-            position.x++;
+        position.change(dx, dy);
         update_hitbox();
         if(!check_position(entities, player))
         {
-            if(dir == UP)
-                position.y++;
-            if(dir == DOWN)
-                position.y--;
-            if(dir == LEFT)
-                position.x++;
-            if(dir == RIGHT)
-                position.x--;
+            position.change(-dx, -dy);
             update_hitbox();
         }
     }
+
+    void new_direction(int new_dx, int new_dy)
+    {
+        if(dx == 0 && dy == 0)
+        {
+            dx = new_dx;
+            dy = new_dy;
+            double dis = sqrt(dx * dx + dy * dy);
+            if(dis > 0)
+            {
+                dx *= speed / dis;
+                dy *= speed / dis;
+            }
+        }
+        else
+        {
+            dx = 0;
+            dy = 0;
+        }
+    }
+
 public:
 
     bool check_map_position() override
@@ -94,6 +106,9 @@ public:
         if(health_points <= 0)
             kill();
     }
+
+
+
     void move(entity ** entities, entity * player) override
     {
         if(!exist)
@@ -103,18 +118,13 @@ public:
         std::mt19937 rng;
         rng = std::mt19937(dev());
         std::uniform_int_distribution<std::mt19937::result_type> change_direction_generator;
+        std::uniform_int_distribution<std::mt19937::result_type> new_direction_generator;
 
-        change_direction_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, CHANCE_TO_CHANGE_DIRECTION);
+        change_direction_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, chance_to_change_direction);
+        new_direction_generator = std::uniform_int_distribution<std::mt19937::result_type>(-100, 100);
         if(change_direction_generator(rng) == 0)
         {
-            if(direction == NONE)
-            {
-                std::uniform_int_distribution <std::mt19937::result_type> new_direction;
-                new_direction = std::uniform_int_distribution<std::mt19937::result_type>(0, DIRECTIONS_NUMBER);
-                direction = new_direction(rng);
-            }
-            else
-                direction = NONE;
+            new_direction(new_direction_generator(rng), new_direction_generator(rng));
         }
     }
 };

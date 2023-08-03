@@ -21,50 +21,9 @@ public:
         fire_damage = ORC_FIRE_DAMAGE;
         magic_damage = ORC_MAGIC_DAMAGE;
         entity_type = ORC_TYPE;
+        speed = ORC_SPEED;
+        chance_to_change_direction = ORC_CHANCE_TO_CHANGE_DIRECTION;
         enemy::init(x, y, bitmaps);
-    }
-
-    void move(entity ** entities, entity * player)
-    {
-        if(!exist)
-            return;
-        if(direction == ORC_DIRECTION_UP_RIGHT)
-        {
-            move_in_direction(UP, entities, player);
-            move_in_direction(RIGHT, entities, player);
-        }
-        if(direction == ORC_DIRECTION_DOWN_LEFT)
-        {
-            move_in_direction(DOWN, entities, player);
-            move_in_direction(LEFT, entities, player);
-        }
-        if(direction == ORC_DIRECTION_UP_LEFT)
-        {
-            move_in_direction(UP, entities, player);
-            move_in_direction(LEFT, entities, player);
-        }
-        if(direction == ORC_DIRECTION_DOWN_RIGHT)
-        {
-            move_in_direction(DOWN, entities, player);
-            move_in_direction(RIGHT, entities, player);
-        }
-        std::random_device dev;
-        std::mt19937 rng;
-        rng = std::mt19937(dev());
-        std::uniform_int_distribution<std::mt19937::result_type> change_direction_generator;
-
-        change_direction_generator = std::uniform_int_distribution<std::mt19937::result_type>(0, CHANCE_TO_CHANGE_DIRECTION);
-        if(change_direction_generator(rng) == 0)
-        {
-            if(direction == NONE)
-            {
-                std::uniform_int_distribution <std::mt19937::result_type> new_direction;
-                new_direction = std::uniform_int_distribution<std::mt19937::result_type>(0, DIRECTIONS_NUMBER);
-                direction = new_direction(rng);
-            }
-            else
-                direction = NONE;
-        }
     }
 };
 

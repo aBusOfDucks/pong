@@ -25,6 +25,8 @@ public:
         fire_damage = PIG_FIRE_DAMAGE;
         magic_damage = PIG_MAGIC_DAMAGE;
         entity_type = PIG_TYPE;
+        speed = PIG_SPEED;
+        chance_to_change_direction = PIG_CHANCE_TO_CHANGE_DIRECTION;
         enemy::init(x, y, bitmaps);
     }
 
