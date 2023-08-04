@@ -19,6 +19,8 @@ protected:
 
     int direction_x;
     int direction_y;
+    double speed;
+    double speed_boost_berry;
 
     void teleport(int x, int y)
     {
@@ -32,6 +34,11 @@ protected:
         weapons[2] = new fire_wand(bitmaps);
     }
 
+    void boost_speed(double boost)
+    {
+        speed += boost;
+    }
+
 public:
 
     player(ALLEGRO_BITMAP ** bitmaps)
@@ -40,6 +47,8 @@ public:
         direction_y = 0;
         bitmap_index = BITMAP_PLAYER_INDEX;
         entity_type = PLAYER_TYPE;
+        speed = PLAYER_INITIAL_SPEED;
+        speed_boost_berry = PLAYER_SPEED_BOOST_BERRY;
         entity::init(0, 0, bitmaps);
         current_weapon = 0;
         set_weapons();
@@ -47,11 +56,11 @@ public:
 
     void move(entity ** entities, entity * player)
     {
-        position.change(direction_x, direction_y);
+        position.change(direction_x * speed, direction_y * speed);
         update_hitbox();
         if(check_ban_map(BITMAP_WATER_MAP_INDEX))
         {
-            position.change(-direction_x, -direction_y);
+            position.change(-direction_x * speed, -direction_y * speed);
         }
         else
         {
@@ -59,7 +68,7 @@ public:
             {
                 if (entity_collide(entities[i]))
                 {
-                    position.change(-direction_x, -direction_y);
+                    position.change(-direction_x * speed, -direction_y * speed);
                     i = MAX_ENTITIES;
                 }
             }
@@ -85,11 +94,21 @@ public:
 
     bool entity_collide(entity * e)
     {
+        bool has_berries = false;
+        if(e->get_type() == BUSH_TYPE)
+        {
+            if(e->entity_interaction(ENTITY_CODE_DOES_HAVE_BERRIES) == ENTITY_ANS_HAS_BERRIES)
+            {
+                has_berries = true;
+            }
+        }
         bool ans = entity::entity_collide(e);
         if (ans)
         {
             if (e->get_type() == ORC_TYPE)
                 teleport(0, 0);
+            if(e->get_type() == BUSH_TYPE && has_berries)
+                boost_speed(speed_boost_berry);
         }
         return ans;
     }
@@ -97,9 +116,9 @@ public:
     bool collide(coordinate left_upper, coordinate right_bottom, int type)
     {
         bool ans = entity::collide(left_upper, right_bottom, type);
-        if (ans)
+        if(ans)
         {
-            if (type == ORC_TYPE)
+            if(type == ORC_TYPE)
                 teleport(0, 0);
         }
         return ans;

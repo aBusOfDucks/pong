@@ -75,6 +75,9 @@
 #define RIGHT 3
 #define NONE 4
 
+#define PLAYER_INITIAL_SPEED 1
+#define PLAYER_SPEED_BOOST_BERRY 0.25
+
 #define DIRECTIONS_NUMBER 5
 
 #define WEAPONS_NUMBER 3
