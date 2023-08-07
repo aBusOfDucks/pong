@@ -68,6 +68,10 @@ void player_input_manager(game & g)
                         g.player_change_weapon(3);
                         break;
 
+                    case ALLEGRO_KEY_4:
+                        g.player_change_weapon(4);
+                        break;
+
                     case ALLEGRO_KEY_TAB:
                     case ALLEGRO_KEY_LSHIFT:
                     case ALLEGRO_KEY_RSHIFT:

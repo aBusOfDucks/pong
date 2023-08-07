@@ -25,6 +25,7 @@
 #define BITMAP_WATER_MAP_INDEX 17
 #define BITMAP_PLANT_BAN_MAP_INDEX 18
 #define BITMAP_ROCK_BAN_MAP_INDEX 19
+#define BITMAP_PLAYER_WITH_SUPER_WAND_INDEX 20
 
 bool check_ban(ALLEGRO_BITMAP ** bitmaps, int index, int x, int y)
 {
@@ -64,6 +65,7 @@ void load_bitmaps(ALLEGRO_BITMAP ** bitmaps)
     bitmaps[17] = al_load_bitmap(BITMAP_WATER_MAP_PATH);
     bitmaps[18] = al_load_bitmap(BITMAP_PLANT_BAN_MAP_PATH);
     bitmaps[19] = al_load_bitmap(BITMAP_ROCK_BAN_MAP_PATH);
+    bitmaps[20] = al_load_bitmap(BITMAP_PLAYER_WITH_SUPER_WAND_PATH);
 
     for(int i = 0; i < BITMAPS_NUMBER; i++)
     {

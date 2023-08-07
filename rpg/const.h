@@ -80,7 +80,7 @@
 
 #define DIRECTIONS_NUMBER 5
 
-#define WEAPONS_NUMBER 3
+#define WEAPONS_NUMBER 4
 
 /* BITMAPS */
 
@@ -104,9 +104,10 @@
 #define BITMAP_WATER_MAP_PATH "bitmaps/water_map.piko"
 #define BITMAP_PLANT_BAN_MAP_PATH "bitmaps/plant_ban_map.piko"
 #define BITMAP_ROCK_BAN_MAP_PATH "bitmaps/rock_ban_map.piko"
+#define BITMAP_PLAYER_WITH_SUPER_WAND_PATH "bitmaps/player_with_super_wand.piko"
 
 
-#define BITMAPS_NUMBER 20
+#define BITMAPS_NUMBER 21
 
 /* TYPES */
 

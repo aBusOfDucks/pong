@@ -9,6 +9,7 @@
 #include "enemy.h"
 #include "magic_wand.h"
 #include "fire_wand.h"
+#include "super_wand.h"
 #include "no_weapon.h"
 
 class player : public entity{
@@ -32,6 +33,7 @@ protected:
         weapons[0] = new no_weapon(bitmaps);
         weapons[1] = new magic_wand(bitmaps);
         weapons[2] = new fire_wand(bitmaps);
+        weapons[3] = new super_wand(bitmaps);
     }
 
     void boost_speed(double boost)
@@ -143,6 +145,8 @@ public:
             bitmap_index = BITMAP_PLAYER_WITH_MAGIC_WAND_INDEX;
         if(number == 3)
             bitmap_index = BITMAP_PLAYER_WITH_FIRE_WAND_INDEX;
+        if(number == 4)
+            bitmap_index = BITMAP_PLAYER_WITH_SUPER_WAND_INDEX;
     }
 
     void use_weapon(int mouse_x, int mouse_y, int mode, projectile * projectiles, coordinate camera)
