@@ -11,4 +11,6 @@ Simple rpg game using c++ Allegro library (https://github.com/liballeg/allegro5)
 
 - Press '3' to select fire wand;
 
+- Press '4' to select super wand (super wand can fire both magic and fire projectile);
+
 - Press Esc to quit.
