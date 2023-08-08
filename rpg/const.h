@@ -17,6 +17,7 @@
 
 #define MAGIC_ATTACK 0
 #define FIRE_ATTACK 1
+#define DEATH_ATTACK 2
 
 #define MAGIC_PROJECTILE_SPEED 1
 #define MAGIC_PROJECTILE_LIFETIME 3
@@ -25,6 +26,10 @@
 #define FIRE_PROJECTILE_SPEED 2
 #define FIRE_PROJECTILE_LIFETIME 1
 #define FIRE_PROJECTILE_RANGE (TPS * FIRE_PROJECTILE_LIFETIME)
+
+#define DEATH_PROJECTILE_SPEED 0.5
+#define DEATH_PROJECTILE_LIFETIME 10
+#define DEATH_PROJECTILE_RANGE (TPS * MAGIC_PROJECTILE_LIFETIME)
 
 /* ENTITIES */
 
@@ -80,7 +85,7 @@
 
 #define DIRECTIONS_NUMBER 5
 
-#define WEAPONS_NUMBER 4
+#define WEAPONS_NUMBER 5
 
 /* BITMAPS */
 
@@ -105,9 +110,10 @@
 #define BITMAP_PLANT_BAN_MAP_PATH "bitmaps/plant_ban_map.piko"
 #define BITMAP_ROCK_BAN_MAP_PATH "bitmaps/rock_ban_map.piko"
 #define BITMAP_PLAYER_WITH_SUPER_WAND_PATH "bitmaps/player_with_super_wand.piko"
+#define BITMAP_PLAYER_WITH_DEATH_WAND_PATH "bitmaps/player_with_death_wand.piko"
+#define BITMAP_DEATH_PROJECTILE_PATH "bitmaps/death_projectile.piko"
 
-
-#define BITMAPS_NUMBER 21
+#define BITMAPS_NUMBER 23
 
 /* TYPES */
 
@@ -119,5 +125,6 @@
 #define ORC_TYPE 5
 #define FIRE_PROJECTILE_TYPE 6
 #define MAGIC_PROJECTILE_TYPE 7
+#define DEATH_PROJECTILE_TYPE 8
 
 #endif /* __CONST_H__ */

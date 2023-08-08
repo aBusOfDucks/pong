@@ -1,5 +1,5 @@
-#ifndef RPG_BITMAPS_H
-#define RPG_BITMAPS_H
+#ifndef __BITMAPS_H__
+#define __BITMAPS_H__
 
 #include <allegro5/allegro5.h>
 #include "const.h"
@@ -26,6 +26,8 @@
 #define BITMAP_PLANT_BAN_MAP_INDEX 18
 #define BITMAP_ROCK_BAN_MAP_INDEX 19
 #define BITMAP_PLAYER_WITH_SUPER_WAND_INDEX 20
+#define BITMAP_PLAYER_WITH_DEATH_WAND_INDEX 21
+#define BITMAP_DEATH_PROJECTILE_INDEX 22
 
 bool check_ban(ALLEGRO_BITMAP ** bitmaps, int index, int x, int y)
 {
@@ -66,6 +68,8 @@ void load_bitmaps(ALLEGRO_BITMAP ** bitmaps)
     bitmaps[18] = al_load_bitmap(BITMAP_PLANT_BAN_MAP_PATH);
     bitmaps[19] = al_load_bitmap(BITMAP_ROCK_BAN_MAP_PATH);
     bitmaps[20] = al_load_bitmap(BITMAP_PLAYER_WITH_SUPER_WAND_PATH);
+    bitmaps[21] = al_load_bitmap(BITMAP_PLAYER_WITH_DEATH_WAND_PATH);
+    bitmaps[22] = al_load_bitmap(BITMAP_DEATH_PROJECTILE_PATH);
 
     for(int i = 0; i < BITMAPS_NUMBER; i++)
     {
@@ -73,4 +77,4 @@ void load_bitmaps(ALLEGRO_BITMAP ** bitmaps)
     }
 }
 
-#endif //RPG_BITMAPS_H
+#endif //__BITMAPS_H__

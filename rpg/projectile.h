@@ -18,6 +18,7 @@ protected:
     int bitmap_index;
     int map_width, map_height;
     bool exist = false;
+    bool destroy_on_hit = true;
 
     void init(ALLEGRO_BITMAP ** bitmaps)
     {
@@ -41,7 +42,7 @@ public:
         position.set(camera.x + mouse_x, camera.y + mouse_y);
     }
 
-    void move(entity ** entities)
+    virtual void move(entity ** entities)
     {
         std::unique_lock<std::mutex> lock(mutex_position);
         position.change(dx, dy);
@@ -53,7 +54,8 @@ public:
             if(entities[i]->collide(hitbox_start, hitbox_end, type))
             {
                 entities[i]->hit_by(type);
-                destroy();
+                if(destroy_on_hit)
+                    destroy();
             }
         }
     }
@@ -116,6 +118,7 @@ public:
         this->map_width = other.map_width;
         this->map_height = other.map_height;
         this->exist = other.exist;
+        this->destroy_on_hit = other.destroy_on_hit;
         return *this;
     }
 

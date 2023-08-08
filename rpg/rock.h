@@ -41,6 +41,11 @@ public:
                 kill();
         return ans;
     }
+    virtual void hit_by(int type) override
+    {
+        if(type == DEATH_PROJECTILE_TYPE)
+            kill();
+    }
 };
 
 #endif //__ROCK_H__

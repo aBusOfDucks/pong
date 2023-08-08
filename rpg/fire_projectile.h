@@ -13,6 +13,7 @@ public:
         range = FIRE_PROJECTILE_RANGE;
         type = FIRE_PROJECTILE_TYPE;
         bitmap_index = BITMAP_FIRE_PROJECTILE_INDEX;
+        destroy_on_hit = true;
         projectile::init(bitmaps);
     }
 
@@ -24,6 +25,7 @@ public:
         range = FIRE_PROJECTILE_RANGE;
         type = FIRE_PROJECTILE_TYPE;
         bitmap_index = BITMAP_FIRE_PROJECTILE_INDEX;
+        destroy_on_hit = true;
         projectile::init(bitmaps);
     }
 
@@ -33,6 +35,7 @@ public:
         range = FIRE_PROJECTILE_RANGE;
         type = FIRE_PROJECTILE_TYPE;
         bitmap_index = BITMAP_FIRE_PROJECTILE_INDEX;
+        destroy_on_hit = true;
         set(x, y, dx, dy);
         projectile::init(bitmaps);
 

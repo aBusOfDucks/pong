@@ -98,6 +98,8 @@ public:
                 get_berries();
             }
         }
+        if(type == DEATH_PROJECTILE_TYPE)
+            kill();
     }
 
     bool entity_collide(entity * e) override

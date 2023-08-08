@@ -53,6 +53,10 @@ public:
                 time_to_burn = time_to_burn_default;
             }
         }
+        if(type == DEATH_PROJECTILE_TYPE)
+        {
+            kill();
+        }
     }
     void move(entity ** entities, entity * player) override
     {

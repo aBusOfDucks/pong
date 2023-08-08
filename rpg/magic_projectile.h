@@ -13,6 +13,7 @@ public:
         range = MAGIC_PROJECTILE_RANGE;
         type = MAGIC_PROJECTILE_TYPE;
         bitmap_index = BITMAP_MAGIC_PROJECTILE_INDEX;
+        destroy_on_hit = true;
         projectile::init(bitmaps);
     }
 
@@ -24,6 +25,7 @@ public:
         range = MAGIC_PROJECTILE_RANGE;
         type = MAGIC_PROJECTILE_TYPE;
         bitmap_index = BITMAP_MAGIC_PROJECTILE_INDEX;
+        destroy_on_hit = true;
         projectile::init(bitmaps);
     }
     magic_projectile(int x, int y, int dx, int dy, ALLEGRO_BITMAP ** bitmaps)
@@ -32,6 +34,7 @@ public:
         range = MAGIC_PROJECTILE_RANGE;
         type = MAGIC_PROJECTILE_TYPE;
         bitmap_index = BITMAP_MAGIC_PROJECTILE_INDEX;
+        destroy_on_hit = true;
         set(x, y, dx, dy);
         projectile::init(bitmaps);
 

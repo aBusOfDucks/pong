@@ -105,6 +105,8 @@ public:
         }
         if(health_points <= 0)
             kill();
+        if(type == DEATH_PROJECTILE_TYPE)
+            kill();
     }
 
 
